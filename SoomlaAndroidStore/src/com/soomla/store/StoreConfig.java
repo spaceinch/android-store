@@ -16,7 +16,6 @@
 package com.soomla.store;
 
 import com.soomla.store.billing.IIabService;
-import com.soomla.store.billing.google.GooglePlayIabService;
 
 /**
  * This class holds the store's configurations.
@@ -33,13 +32,13 @@ public class StoreConfig {
      * The default is Google Play using https://github.com/soomla/android-store-google-play
      * If this value is left empty, you will not be able to release your game to the market.
      */
-    public static final IIabService InAppBillingService = new GooglePlayIabService();
+    public static IIabService InAppBillingService;
 
     //CHANGE THIS SECRET!!!
     public static String SOOM_SEC = "SINC_SSEEKK";
 
     //Set to true if you want to print out debug messages
-    public static final boolean logDebug = false;
+    public static final boolean logDebug = true;
 
     public static final boolean friendlyRefunds = false;
 

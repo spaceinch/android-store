@@ -93,7 +93,11 @@ public class MarketItem {
 
     /** Setters and Getters **/
 
-    public void setMarketPrice(String mMarketPrice) {
+    public void setMarketCurrencyCode(String mMarketCurrencyCode) {
+    	this.mMarketCurrencyCode = mMarketCurrencyCode;
+    }
+    
+    public void setMarketPrice(double mMarketPrice) {
         this.mMarketPrice = mMarketPrice;
     }
 
@@ -103,6 +107,10 @@ public class MarketItem {
 
     public void setMarketDescription(String mMarketDescription) {
         this.mMarketDescription = mMarketDescription;
+    }
+    
+    public void setMarketPriceWithCurrencySymbol(String mMarketPriceWithCurrencySymbol) {
+        this.mMarketPriceWithCurrencySymbol = mMarketPriceWithCurrencySymbol;
     }
 
     public String getProductId() {
@@ -120,8 +128,12 @@ public class MarketItem {
     public double getPrice() {
         return mPrice;
     }
+    
+    public String getMarketCurrencyCode() {
+        return mMarketCurrencyCode;
+    }
 
-    public String getMarketPrice() {
+    public double getMarketPrice() {
         return mMarketPrice;
     }
 
@@ -131,6 +143,10 @@ public class MarketItem {
 
     public String getMarketDescription() {
         return mMarketDescription;
+    }
+    
+    public String getMarketPriceWithCurrencySymbol() {
+        return mMarketPriceWithCurrencySymbol;
     }
 
 
@@ -144,9 +160,14 @@ public class MarketItem {
 
     private double mPrice; //the actual $$ cost of the current item in the market.
 
-    private String mMarketPrice;
+    private double mMarketPrice;
+
+    private String mMarketCurrencyCode;
 
     private String mMarketTitle;
 
     private String mMarketDescription;
+
+    private String mMarketPriceWithCurrencySymbol;
+
 }

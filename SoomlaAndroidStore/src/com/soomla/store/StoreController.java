@@ -209,10 +209,12 @@ public class StoreController {
                             List<MarketItem> marketItems = new ArrayList<MarketItem>();
                             for (IabSkuDetails iabSkuDetails : skuDetailsList) {
                                 String productId = iabSkuDetails.getSku();
-                                String price = iabSkuDetails.getPrice();
+                                double price = iabSkuDetails.getPrice();
                                 String title = iabSkuDetails.getTitle();
                                 String desc = iabSkuDetails.getDescription();
-
+                                String priceWithCurrencySymbol = iabSkuDetails.getPriceWithCurrencySymbol();
+                                String currencyCode = iabSkuDetails.getCurrencyCode();
+                                
                                 StoreUtils.LogDebug(TAG, "Got item details: " +
                                         "\ntitle:\t" + iabSkuDetails.getTitle() +
                                         "\nprice:\t" + iabSkuDetails.getPrice() +
@@ -227,7 +229,9 @@ public class StoreController {
                                     mi.setMarketTitle(title);
                                     mi.setMarketPrice(price);
                                     mi.setMarketDescription(desc);
-
+                                    mi.setMarketPriceWithCurrencySymbol(priceWithCurrencySymbol);
+                                    mi.setMarketCurrencyCode(currencyCode);
+                                    
                                     marketItems.add(mi);
                                 } catch (VirtualItemNotFoundException e) {
                                     String msg = "(refreshInventory) Couldn't find a "

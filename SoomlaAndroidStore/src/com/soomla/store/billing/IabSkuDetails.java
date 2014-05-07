@@ -25,10 +25,12 @@ public class IabSkuDetails {
     private String mItemType;
     private String mSku;
     private String mType;
-    private String mPrice;
+    private double mPrice;
     private String mTitle;
     private String mDescription;
     private String mJson;
+    private String mPriceWithCurrencySymbol;
+    private String mCurrencyCode;
 
 //    public IabSkuDetails(String jsonSkuDetails) throws JSONException {
 //        this(IabHelper.ITEM_TYPE_INAPP, jsonSkuDetails);
@@ -40,9 +42,11 @@ public class IabSkuDetails {
         JSONObject o = new JSONObject(mJson);
         mSku = o.optString("productId");
         mType = o.optString("type");
-        mPrice = o.optString("price");
+        mPrice = o.optDouble("price_amount_micros")/1000000;
         mTitle = o.optString("title");
         mDescription = o.optString("description");
+        mPriceWithCurrencySymbol = o.optString("price");
+        mCurrencyCode = o.optString("price_currency_code");
     }
 
     public String getItemType() {
@@ -57,7 +61,7 @@ public class IabSkuDetails {
         return mType;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return mPrice;
     }
 
@@ -73,6 +77,14 @@ public class IabSkuDetails {
         return mJson;
     }
 
+    public String getPriceWithCurrencySymbol() {
+        return mPriceWithCurrencySymbol;
+    }
+    
+    public String getCurrencyCode() {
+        return mCurrencyCode;
+    }
+    
     @Override
     public String toString() {
         return "IabSkuDetails:" + mJson;
