@@ -10,6 +10,8 @@ SoomlaAndroidStore/UML2/
 SoomlaAndroidStore/.idea/workspace.xml
 SoomlaAndroidStore/.idea/misc.xml
 
+SoomlaAndroidStore/local.properties
+
 SoomlaAndroidStoreTest/.idea/
 SoomlaAndroidStoreTest/out/
 SoomlaAndroidStoreTest/gen/
