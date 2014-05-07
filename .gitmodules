@@ -1,3 +1,3 @@
 [submodule "submodules/android-store-google-play"]
 	path = submodules/android-store-google-play
-	url = https://github.com/soomla/android-store-google-play.git
+	url = git@github.com:spaceinch/android-store-google-play.git
