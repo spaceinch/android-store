@@ -43,7 +43,12 @@ public class JSONConsts {
     public static final String MARKETITEM_ANDROID_ID    = "androidId";
     public static final String MARKETITEM_MANAGED       = "consumable";
     public static final String MARKETITEM_PRICE         = "price";
+    public static final String MARKETITEM_MARKET_PRICE  = "market_price";
+    public static final String MARKETITEM_MARKET_TITLE  = "market_title";
+    public static final String MARKETITEM_MARKET_DESC   = "market_desc";
+    public static final String MARKETITEM_MARKET_PRICE_WITH_CURRENCY_SYMBOL = "market_price_with_currency_symbol";
 
+       
     public static final String EQUIPPABLE_EQUIPPING     = "equipping";
 
     // VGP = SingleUsePackVG

@@ -70,7 +70,21 @@ public class MarketItem {
         try {
             jsonObject.put(JSONConsts.MARKETITEM_MANAGED, mManaged.ordinal());
             jsonObject.put(JSONConsts.MARKETITEM_ANDROID_ID, mProductId);
+            jsonObject.put(JSONConsts.MARKETITEM_PRODUCT_ID, mProductId);
             jsonObject.put(JSONConsts.MARKETITEM_PRICE, new Double(mPrice));
+            
+            if (mMarketPrice > 0) {
+            	jsonObject.put(JSONConsts.MARKETITEM_MARKET_PRICE, new Double(mMarketPrice));
+            }
+            if (mMarketTitle != null) {
+            	jsonObject.put(JSONConsts.MARKETITEM_MARKET_TITLE, mMarketTitle);
+            }
+            if (mMarketDescription != null) {
+            	jsonObject.put(JSONConsts.MARKETITEM_MARKET_DESC, mMarketDescription);
+            }
+            if (mMarketPriceWithCurrencySymbol != null) {
+            	jsonObject.put(JSONConsts.MARKETITEM_MARKET_PRICE_WITH_CURRENCY_SYMBOL, mMarketPriceWithCurrencySymbol);
+            }          
         } catch (JSONException e) {
             StoreUtils.LogError(TAG, "An error occured while generating JSON object.");
         }
@@ -160,14 +174,14 @@ public class MarketItem {
 
     private double mPrice; //the actual $$ cost of the current item in the market.
 
-    private double mMarketPrice;
+    private double mMarketPrice = 0;
 
-    private String mMarketCurrencyCode;
+    private String mMarketCurrencyCode = null;
 
-    private String mMarketTitle;
+    private String mMarketTitle = null;
 
-    private String mMarketDescription;
+    private String mMarketDescription = null;
 
-    private String mMarketPriceWithCurrencySymbol;
+    private String mMarketPriceWithCurrencySymbol = null;
 
 }
