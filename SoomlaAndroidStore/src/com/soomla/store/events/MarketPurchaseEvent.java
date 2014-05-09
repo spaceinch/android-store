@@ -30,10 +30,11 @@ public class MarketPurchaseEvent {
      * @param token token associated with in-app billing purchase
      */
     public MarketPurchaseEvent(PurchasableVirtualItem purchasableVirtualItem, String payload,
-                               String token) {
+                               String token, String orderId) {
         mPurchasableVirtualItem = purchasableVirtualItem;
         mPayload = payload;
         mToken = token;
+        mOrderId = orderId;
     }
 
 
@@ -51,6 +52,9 @@ public class MarketPurchaseEvent {
         return mToken;
     }
 
+    public String getOrderId() {
+        return mOrderId;
+    }
 
     /** Private Members */
 
@@ -59,4 +63,6 @@ public class MarketPurchaseEvent {
     private String mPayload;
 
     private String mToken;
+    
+    private String mOrderId;
 }

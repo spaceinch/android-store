@@ -460,7 +460,7 @@ public class StoreController {
                 }
 
                 BusProvider.getInstance().post(new MarketPurchaseEvent
-                        (pvi, developerPayload, token));
+                        (pvi, developerPayload, token, purchase.getOrderId()));
                 pvi.give(1);
                 BusProvider.getInstance().post(new ItemPurchasedEvent(pvi));
 
