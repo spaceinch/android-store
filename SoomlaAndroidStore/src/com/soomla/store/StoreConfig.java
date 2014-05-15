@@ -38,7 +38,7 @@ public class StoreConfig {
     public static String SOOM_SEC = "SINC_SSEEKK";
 
     //Set to true if you want to print out debug messages
-    public static final boolean logDebug = true;
+    public static final boolean logDebug = false;
 
     public static final boolean friendlyRefunds = false;
 
