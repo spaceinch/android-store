@@ -38,6 +38,7 @@ import com.soomla.store.events.IabServiceStartedEvent;
 import com.soomla.store.events.MarketItemsRefreshed;
 import com.soomla.store.events.MarketPurchaseCancelledEvent;
 import com.soomla.store.events.MarketPurchaseEvent;
+import com.soomla.store.events.MarketPurchaseVerificationEvent;
 import com.soomla.store.events.MarketPurchaseStartedEvent;
 import com.soomla.store.events.MarketRefundEvent;
 import com.soomla.store.events.RestoreTransactionsFinishedEvent;
@@ -47,6 +48,7 @@ import com.soomla.store.events.StoreControllerInitializedEvent;
 import com.soomla.store.events.UnexpectedStoreErrorEvent;
 import com.soomla.store.exceptions.VirtualItemNotFoundException;
 import com.soomla.store.purchaseTypes.PurchaseWithMarket;
+import com.soomla.store.util.ReceiptValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -461,10 +463,54 @@ public class StoreController {
 
                 BusProvider.getInstance().post(new MarketPurchaseEvent
                         (pvi, developerPayload, token, purchase.getOrderId()));
-                pvi.give(1);
-                BusProvider.getInstance().post(new ItemPurchasedEvent(pvi));
+                
+                if (StoreConfig.RECEIPT_VALIDATOR != null) {
+            		try {
+            			ReceiptValidator g = (ReceiptValidator)Class.forName(StoreConfig.RECEIPT_VALIDATOR).newInstance();
+            			
+            			g.validate(purchase, new ReceiptValidator.OnReceiptValidationListener() {
+        					@Override
+        					public void onReceiptValidtionFinished(boolean validationSuccessful, IabPurchase pur) {
+        						PurchasableVirtualItem p;
+        						
+        						try {
+        							p = StoreInfo.getPurchasableItem(pur.getSku());
+        				        } catch (VirtualItemNotFoundException e) {
+        				            StoreUtils.LogError(TAG, "(handleSuccessfulPurchase - purchase or query-inventory) "
+        				                    + "ERROR : Couldn't find the " +
+        				                    " VirtualCurrencyPack OR MarketItem  with productId: " + pur.getSku() +
+        				                    ". It's unexpected so an unexpected error is being emitted.");
+        				            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent("Couldn't find the sku "
+        				                    + "of a product after purchase or query-inventory."));
+        				            return;
+        				        }
+        								 
+        						if (validationSuccessful && p != null) {
+        							
+        							BusProvider.getInstance().post(new MarketPurchaseVerificationEvent
+        			                        (p, pur.getOrderId()));
+        							
+        			                p.give(1);
+        			                BusProvider.getInstance().post(new ItemPurchasedEvent(p));
+        			
+        			                consumeIfConsumable(pur);
+        			                
+        						} else {
+        							StoreUtils.LogError(TAG, "IabPurchase server verification FAILED for sku " + pur.getSku());
+        							BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
+        						}
+        					}
+        				});
+            		} catch (Exception e) {
+            			StoreUtils.LogDebug("SOOMLA", "Error generating developer payload");            			
+            		}
+                } else {
 
-                consumeIfConsumable(purchase);
+                	pvi.give(1);
+	                BusProvider.getInstance().post(new ItemPurchasedEvent(pvi));
+	
+	                consumeIfConsumable(purchase);
+                }
                 break;
 
             case 1:
