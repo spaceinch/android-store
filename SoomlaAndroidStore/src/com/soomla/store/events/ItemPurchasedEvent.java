@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.events;
 
 import com.soomla.store.domain.PurchasableVirtualItem;
 
 /**
- * This event is fired when the balance of a specific PurchasableVirtualItem was purchased.
+ * This event is fired when a specific <code>PurchasableVirtualItem</code> has been purchased.
  */
 public class ItemPurchasedEvent {
 

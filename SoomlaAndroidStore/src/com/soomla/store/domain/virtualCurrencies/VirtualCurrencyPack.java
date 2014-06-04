@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.domain.virtualCurrencies;
 
 import com.soomla.store.StoreUtils;
@@ -28,15 +29,18 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 /**
- * Every game has its virtualCurrencies. Here you represent a pack of a specific VirtualCurrency.
+ * Every game has its virtual currencies. This class represents a pack of a specific
+ * {@link com.soomla.store.domain.virtualCurrencies.VirtualCurrency}.
  *
- * Real Game Example: If virtual currency in your game is a 'Coin', you will sell packs of 'Coins'
- * (e.g. "10 Coins Set" or "Super Saver Pack").
+ * Real Game Example: If the virtual currency in your game is a 'Coin', you will sell packs of
+ * 'Coins' such as "10 Coins Set" or "Super Saver Pack".
  *
- * NOTE: In case you want this item to be available for purchase in the market (PurchaseWithMarket),
- * you will need to define the item in the market (Google Play, Amazon App Store, etc...).
+ * NOTE: In case you want this item to be available for purchase with real money  you will need to
+ * define the item in the market (Google Play, Amazon App Store, etc...).
  *
- * Inheritance: VirtualCurrencyPack > PurchasableVirtualItem > VirtualItem
+ * Inheritance: VirtualCurrencyPack >
+ * {@link com.soomla.store.domain.PurchasableVirtualItem} >
+ * {@link com.soomla.store.domain.VirtualItem}
  */
 public class VirtualCurrencyPack extends PurchasableVirtualItem {
 
@@ -46,9 +50,9 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
      * @param mName see parent
      * @param mDescription see parent
      * @param mItemId see parent
-     * @param purchaseType see parent
      * @param mCurrencyAmount the amount of currency in the pack
-     * @param mCurrencyItemId the itemId of the currency associated with this pack
+     * @param mCurrencyItemId the item id of the currency associated with this pack
+     * @param purchaseType see parent
      */
     public VirtualCurrencyPack(String mName, String mDescription, String mItemId,
                                int mCurrencyAmount,
@@ -73,9 +77,7 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public JSONObject toJSONObject(){
@@ -100,11 +102,7 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @param amount see parent
-     * @param notify see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int give(int amount, boolean notify) {
@@ -117,15 +115,11 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
             return 0;
         }
         return StorageManager.getVirtualCurrencyStorage().add(
-                currency, mCurrencyAmount*amount, notify);
+                currency, mCurrencyAmount * amount, notify);
     }
 
     /**
-     * see parent
-     *
-     * @param amount see parent
-     * @param notify see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int take(int amount, boolean notify) {
@@ -142,9 +136,7 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @param balance see parent
+     * @{inheritDoc}
      */
     @Override
     public int resetBalance(int balance, boolean notify) {
@@ -155,9 +147,7 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     protected boolean canBuy() {

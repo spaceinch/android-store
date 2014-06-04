@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@ public class KeyValueStorage {
     /**
      * Retrieves the value for the given key.
      *
-     * @param key is the key in the key-val pair.
-     * @return the value for the given key.
+     * @param key is the key in the key-val pair
+     * @return the value for the given key
      */
     public String getValue(String key) {
         StoreUtils.LogDebug(TAG, "trying to fetch a value for key: " + key);
@@ -64,10 +64,10 @@ public class KeyValueStorage {
     }
 
     /**
-     * Sets key-val pair in the database according to given key and val
+     * Sets key-val pair in the database according to given key and val.
      *
-     * @param key
-     * @param val
+     * @param key key to set in pair
+     * @param val value to set in pair
      */
     public void setNonEncryptedKeyValue(String key, String val) {
         StoreUtils.LogDebug(TAG, "setting " + val + " for key: " + key);
@@ -78,9 +78,9 @@ public class KeyValueStorage {
     }
 
     /**
-     * Deletes key-val pair that has the given key
+     * Deletes key-val pair that has the given key.
      *
-     * @param key
+     * @param key the key to indicate which pair to delete
      */
     public void deleteNonEncryptedKeyValue(String key) {
         StoreUtils.LogDebug(TAG, "deleting " + key);
@@ -89,10 +89,10 @@ public class KeyValueStorage {
     }
 
     /**
-     * Retrieves the value of the key-val pair with the given key
+     * Retrieves the value of the key-val pair with the given key.
      *
-     * @param key
-     * @return value
+     * @param key key according to which val will be retrieved
+     * @return value of key-val pair
      */
     public String getNonEncryptedKeyValue(String key) {
         StoreUtils.LogDebug(TAG, "trying to fetch a value for key: " + key);
@@ -113,10 +113,10 @@ public class KeyValueStorage {
     }
 
     /**
-     * Retrieves key-val pairs according to given query
+     * Retrieves key-val pairs according to given query.
      *
-     * @param query
-     * @return
+     * @param query query that determines what key-val pairs will be returned
+     * @return hashmap of key-val pairs
      */
     public HashMap<String, String> getNonEncryptedQueryValues(String query) {
         StoreUtils.LogDebug(TAG, "trying to fetch values for query: " + query);
@@ -169,7 +169,7 @@ public class KeyValueStorage {
     }
 
     /**
-     * Retrieves key-val database
+     * Retrieves the key-val database.
      *
      * @return key-val database
      */

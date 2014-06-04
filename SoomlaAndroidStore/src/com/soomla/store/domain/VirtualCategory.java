@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.domain;
 
 import com.soomla.store.StoreUtils;
@@ -30,10 +31,10 @@ import java.util.ArrayList;
 public class VirtualCategory {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param name the category's name.
-     * @param goodsItemIds the list of itemIds of the VirtualGoods in this category.
+     * @param name the category's name
+     * @param goodsItemIds list of item ids of the virtual goods in this category
      */
     public VirtualCategory(String name, ArrayList<String> goodsItemIds) {
         mName = name;
@@ -41,10 +42,10 @@ public class VirtualCategory {
     }
 
     /**
-     * Constructor
-     * Generates an instance of {@link VirtualCategory} from a JSONObject.
+     * Constructor.
+     * Generates an instance of <code>VirtualCategory</code> from the given <code>JSONObject</code>.
      *
-     * @param jsonObject is a JSONObject representation of the wanted {@link VirtualCategory}.
+     * @param jsonObject A JSONObject representation of the wanted <code>VirtualCategory</code>.
      * @throws JSONException
      */
     public VirtualCategory(JSONObject jsonObject) throws JSONException{
@@ -58,9 +59,9 @@ public class VirtualCategory {
     }
 
     /**
-     * Converts the current {@link VirtualCategory} to a JSONObject.
+     * Converts the current <code>VirtualCategory</code> to a <code>JSONObject</code>.
      *
-     * @return a JSONObject representation of the current {@link VirtualCategory}.
+     * @return A JSONObject representation of the current <code>VirtualCategory</code>.
      */
     public JSONObject toJSONObject(){
         JSONObject jsonObject = new JSONObject();

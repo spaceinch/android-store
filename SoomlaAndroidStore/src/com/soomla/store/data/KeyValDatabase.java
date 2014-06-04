@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.data;
 
 import android.content.ContentValues;
@@ -32,9 +33,9 @@ import java.util.List;
 public class KeyValDatabase {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param context
+     * @param context global information about the application environment
      */
     public KeyValDatabase(Context context) {
 
@@ -56,17 +57,17 @@ public class KeyValDatabase {
     /**
      * Deletes the database completely!
      *
-     * @param context
+     * @param context global information about the application environment
      */
     public void purgeDatabase(Context context) {
         context.deleteDatabase(DATABASE_NAME);
     }
 
     /**
-     * Sets the given value to the given key
+     * Sets the given value to the given key.
      *
-     * @param key the key of the key-val pair.
-     * @param val the val of the key-val pair.
+     * @param key the key of the key-val pair
+     * @param val the val of the key-val pair
      */
     public synchronized void setKeyVal(String key, String val) {
         ContentValues values = new ContentValues();
@@ -83,8 +84,8 @@ public class KeyValDatabase {
     /**
      * Retrieves the value for the given key.
      *
-     * @param key the key of the key-val pair.
-     * @return a value for the given key.
+     * @param key the key of the key-val pair
+     * @return a value for the given key
      */
     public synchronized String getKeyVal(String key) {
         Cursor cursor = mStoreDB.query(KEYVAL_TABLE_NAME, KEYVAL_COLUMNS, KEYVAL_COLUMN_KEY
@@ -108,7 +109,7 @@ public class KeyValDatabase {
     /**
      * Deletes the key-val pair.
      *
-     * @param key the key of the key-val pair.
+     * @param key the key of the key-val pair
      */
     public synchronized void deleteKeyVal(String key) {
         mStoreDB.delete(KEYVAL_TABLE_NAME, KEYVAL_COLUMN_KEY + "=?", new String[] { key });

@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2012-2014 Soomla Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 package com.soomla.example;
 
 import android.app.Activity;
@@ -33,10 +50,10 @@ import java.util.HashMap;
 public class StoreGoodsActivity extends Activity {
 
     /**
-     * Starts StorePacksActivity.
-     * This function is called when the "Wants to buy more muffins" button is clicked.
+     * Starts <code>StorePacksActivity</code>.
+     * This function is called when the button "Wants to buy more muffins" is clicked.
      *
-     * @param v
+     * @param v View
      * @throws IOException
      */
     public void wantsToBuyPacks(View v) throws IOException {
@@ -45,20 +62,20 @@ public class StoreGoodsActivity extends Activity {
     }
 
     /**
-     * Queries Google Play store's inventory. Upon success, returns a list of all metadata stored
-     * there (the items that have been purchase). The metadata includes the item's name,
+     * Queries Google Play Store's inventory. Upon success, returns a list of all metadata stored
+     * there (the items that have been purchased). The metadata includes each item's name,
      * description, price, product id, etc...  Upon failure, returns error message.
      *
-     * @param v
+     * @param v View
      * @throws IOException
      */
     public void restoreTransactions(View v) throws IOException{
-        StoreController.getInstance().refreshInventory(false);
+        StoreController.getInstance().restoreTransactions();
     }
 
     /**
-     * Receives the given onCurrencyBalanceChanged. Upon notification, fetches the currency
-     * balance and places it in the balance label.
+     * Receives the given <code>onCurrencyBalanceChanged</code>. Upon notification, fetches the
+     * currency balance and places it in the balance label.
      *
      * @param currencyBalanceChangedEvent the event received
      */
@@ -69,8 +86,9 @@ public class StoreGoodsActivity extends Activity {
     }
 
     /**
-     * Receives the given goodBalanceChangedEvent. Upon notification, fetches the good associated
-     * with the given goodBalanceChangedEvent and displays its price and the balance.
+     * Receives the given <code>goodBalanceChangedEvent</code>. Upon notification, fetches the
+     * good associated with the given <code>goodBalanceChangedEvent</code> and displays its price
+     * and the balance.
      *
      * @param goodBalanceChangedEvent the event received
      */
@@ -96,8 +114,8 @@ public class StoreGoodsActivity extends Activity {
      * Displays the list view of the game, where users can see the available goods for purchase.
      *
      * @param savedInstanceState if the activity should be re-initialized after previously being
-     *                           shut down then this Bundle will contain the most recent data,
-     *                           otherwise it will be null.
+     *                           shut down then this <code>Bundle</code> will contain the most
+     *                           recent data, otherwise it will be null.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +136,10 @@ public class StoreGoodsActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                /*
-                * The user decided to make an actual purchase of virtual goods. We try to buy() the
-                * user's desired good and StoreController tells us if the user has enough funds to
-                * make the purchase. If he doesn't have enough then an InsufficientFundsException
-                * will be thrown.
+                The user decided to make an actual purchase of virtual goods. We try to buy() the
+                user's desired good and StoreController tells us if the user has enough funds to
+                make the purchase. If he/she doesn't have enough then an InsufficientFundsException
+                will be thrown.
                 */
                 VirtualGood good = StoreInfo.getGoods().get(i);
                 try {
@@ -160,7 +178,7 @@ public class StoreGoodsActivity extends Activity {
 
     /**
      * Called when your user leaves your activity but does not quit, or in other words, upon a call
-     * to onPause() your activity goes to the background.
+     * to <code>onPause()</code> your activity goes to the background.
      */
     @Override
     protected void onPause() {

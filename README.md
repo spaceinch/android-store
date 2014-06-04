@@ -8,32 +8,28 @@ Haven't you ever wanted an in-app purchase one liner that looks like this!?
 
 ## android-store
 
-**April 1st, 2014**: We've added the option to refresh market items details from the IAB Service (default is Google Play). You can call 'refreshInventory(true)' from StoreController when you want and all your PurchasableItems that has a PurchaseType of PurchaseWithMarket will update the values of: MarketPrice, MarketTitle, MarketDescription. android-store automatically running the operation when you intialize StoreController.
+**May 25th, 2014**: Amazon billing service is now our second billing service implementation. See [Billing Services](#whats-next-selecting-a-billing-service) for details.
+
+**April 1st, 2014**: We've added the option to refresh market items details from the IAB Service (default is Google Play). You can call 'refreshInventory(true)' from StoreController when you want and all your PurchasableItems that has a PurchaseType of PurchaseWithMarket will update the values of: MarketPrice, MarketTitle, MarketDescription. android-store automatically running the operation when you initialize StoreController.
 
 **March 26th, 2014**: We've split out Google Play to a plugin so we'll be able to add more billing providers to android-store.  http://blog.soom.la/2014/03/google-play-will-not-be-the-only-option-for-long.html
 
-**December 11th, 2013**: Refunds have been readded. *android-store* now checks if owned items have been refunded and takes them away when `StoreController` is initialized.
-
-> Note: removal of refunded items may take a while due to the way IABv3 caches information on the device. Try disabling and enabling WiFi on the device to refresh the cache.
-
-The current virtual economny model is called **modelV3**. Want to learn more about it? Try these:  
+The current virtual economy model is called **modelV3**. Want to learn more about it? Try these:  
 * [Economy Model Objects](https://github.com/soomla/android-store/wiki/Economy-Model-Objects)  
 * [Handling Store Operations](https://github.com/soomla/android-store/wiki/Handling-Store-Operations)
 
-android-store is an open code initiative as part of The SOOMLA Project. It is a Java API that simplifies Google Play's in-app purchasing API and compliments it with storage, security and event handling. The project also includes a sample app for reference. 
+android-store is an open code initiative as part of The SOOMLA Project. It is a Java API that simplifies Google Play's in-app purchasing API and compliments it with storage, security and event handling. The project also includes a sample app for reference.
 
 
 Check out our [Wiki] (https://github.com/soomla/android-store/wiki) for more information about the project and how to use it better.
 
-## Getting Started
+## Getting Started (With sources)
 
-* Before doing anything, SOOMLA recommends that you go through [Android In-app Billing](http://developer.android.com/guide/google/play/billing/index.html).
+* Before doing anything, SOOMLA recommends that you go through [Android In-app Billing](http://developer.android.com/guide/google/play/billing/index.html) and [Amazon In App Purchasing](https://developer.amazon.com/public/apis/earn/in-app-purchasing).
 
-1. Recursively clone android-store. Copy all files from android-store/SoomlaAndroidStore subfolders to their equivalent folders in your Android project:
+1. Clone android-store. Copy all files from android-store/SoomlaAndroidStore subfolders to their equivalent folders in your Android project:
 
- `git clone --recursive git@github.com:soomla/android-store.git`
- 
- 	> This will clone android-store and android-store-google-play which is the default billing provider.
+ `git clone git@github.com:soomla/android-store.git`
 
 2. Make the following changes to your AndroidManifest.xml:
 
@@ -44,18 +40,6 @@ Check out our [Wiki] (https://github.com/soomla/android-store/wiki) for more inf
                  android:name="com.soomla.store.SoomlaApp">
     ```
 
-  Add the following permission:
-
-    ```xml
-    <uses-permission android:name="com.android.vending.BILLING" />
-    ```
-
-  Add the activity to your `application` element, android-store needs to spawn a transparent activity to make purchases:
-
-    ```xml
-        <activity android:name="com.soomla.store.StoreController$IabActivity"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
-    ```
 3. Change the value of `StoreConfig.SOOM_SEC` to a secret of you choice. Do this now!
    **You can't change this value after you publish your game!**
 
@@ -63,7 +47,6 @@ Check out our [Wiki] (https://github.com/soomla/android-store/wiki) for more inf
 
       ```Java
        StoreController.getInstance().initialize(new YourStoreAssetsImplementation(),
-                                           "[YOUR PUBLIC KEY FROM GOOGLE PLAY]",
                                            "[YOUR CUSTOM GAME SECRET HERE]");
       ```
 
@@ -71,10 +54,86 @@ Check out our [Wiki] (https://github.com/soomla/android-store/wiki) for more inf
 
     > Initialize `StoreController` ONLY ONCE when your application loads.
 
+5. Refer to the [next section](https://github.com/soomla/android-store#whats-next-selecting-a-billing-service) for information of selecting your Billing Service and setting it up.
+
 And that's it ! You have storage and in-app purchasing capabilities... ALL-IN-ONE.
 
 
-## What's next? In App Purchasing.
+## What's next? Selecting a Billing Service
+
+android-store can be used on all Android based devices meaning that you might want to use IAP with different billing services.
+
+We've created two billing services for you: Google Play and Amazon (according to your demand).
+
+The billing service is automatically started and stopped for every operation you're running on `StoreContoroller` (`buyWithMarket`, `restoreTransactions` ...).
+
+Be careful with that. Don't leave the service running in the background without closing it.
+
+You must select a billing service for android-store to work properly. The integration of a billing service is very easy:
+
+#### [Google Play](https://github.com/soomla/android-store-google-play)
+
+1. Add `AndroidStoreGooglePlay.jar` from the folder `billing-services/google-play` to your project.
+2. Make the following changes in `AndroidManifest.xml`:
+
+  Add the following permission (for Google Play):
+
+  ```xml
+      <uses-permission android:name="com.android.vending.BILLING" />
+  ```
+
+  Add the `IabActivity` to your `application` element, the plugin will spawn a transparent activity to make purchases. Also, you need to tell us what plugin you're using so add a meta-data tag for that:
+
+  ```xml
+      <activity android:name="com.soomla.store.billing.google.GooglePlayIabService$IabActivity"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+      <meta-data android:name="billing.service" android:value="google.GooglePlayIabService" />
+  ```
+
+3. After you initialize `StoreController`, let the plugin know your public key from the dev console:
+
+  ```Java
+      GooglePlayIabService.getInstance().setPublicKey("[YOUR PUBLIC KEY FROM THE MARKET]");
+  ```
+
+
+4. If you want to allow the test purchases, all you need to do is tell that to the plugin:
+
+  ```Java
+      GooglePlayIabService.AllowAndroidTestPurchases = true;
+  ```
+
+For Google Play, We recommend that you open the IAB Service and keep it open in the background in cases where you have an in-game storefront. This is how you do that:
+
+When you open the store, call:  
+  ```Java
+      StoreController.getInstance().startIabServiceInBg();
+  ```
+
+When the store is closed, call:  
+  ```Java
+      StoreController.getInstance().stopIabServiceInBg();
+  ```
+
+#### [Amazon](https://github.com/soomla/android-store-amazon)
+
+1. Add `in-app-purchasing-1.0.3.jar` and `AndroidStoreAmazon.jar` from the folder `billing-services/amazon` to your project.
+
+2. Make the following changes in `AndroidManifest.xml`:
+
+  Add Amazon's `ResponseReceiver` to your `application` element. Also, you need to tell us what plugin you're using so add a meta-data tag for that:
+
+  ```xml
+        <receiver android:name = "com.amazon.inapp.purchasing.ResponseReceiver" >
+            <intent-filter>
+                <action android:name = "com.amazon.inapp.purchasing.NOTIFY"
+                        android:permission = "com.amazon.inapp.purchasing.Permission.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <meta-data android:name="billing.service" android:value="amazon.AmazonIabService" />
+  ```
+
+## Important read: In App Purchasing.
 
 
 When we implemented modelV3, we were thinking about ways people buy things inside apps. We figured many ways you can let your users purchase stuff in your game and we designed the new modelV3 to support 2 of them: PurchaseWithMarket and PurchaseWithVirtualItem.
@@ -88,44 +147,24 @@ Here is an example:
 
 Lets say you have a _VirtualCurrencyPack_ you call `TEN_COINS_PACK` and a _VirtualCurrency_ you call `COIN_CURRENCY`:
 
-```Java
-VirtualCurrencyPack TEN_COINS_PACK = new VirtualCurrencyPack(
-        "10 Coins",                                     // name
-        "A pack of 10 coins",                           // description
-        "10_coins",                                     // item id
-        10,                                             // number of currencies in the pack
-        COIN_CURRENCY_ITEM_ID,                          // the currency associated with this pack
-        new PurchaseWithMarket("com.soomla.ten_coin_pack", 1.99));
-```
- 
+    ```Java
+      VirtualCurrencyPack TEN_COINS_PACK = new VirtualCurrencyPack(
+            "10 Coins",                                     // name
+            "A pack of 10 coins",                           // description
+            "10_coins",                                     // item id
+            10,                                             // number of currencies in the pack
+            COIN_CURRENCY_ITEM_ID,                          // the currency associated with this pack
+            new PurchaseWithMarket("com.soomla.ten_coin_pack", 1.99));
+    ```
+
 Now you can use _StoreInventory_ to buy your new VirtualCurrencyPack:
 
-```Java
-StoreInventory.buy(TEN_COINS_PACK.getItemId());
-```
-    
+    ```Java
+        StoreInventory.buy(TEN_COINS_PACK.getItemId());
+    ```
+
 And that's it! android-store knows how to contact Google Play for you and will redirect your users to their purchasing system to complete the transaction.
 Don't forget to define your _IStoreEventHandler_ in order to get the events of successful or failed purchases (see [Event Handling](https://github.com/soomla/android-store#event-handling)).
-
-## In App Billing Service
-
-We currently support Google Play as the default IAB service. We're working to add more billing services.
-
-The billing service is started and stopped for every operation you're running on StoreContoroller (buyWithMarket, restoreTransactions ...).
-
-We recommend that you open the IAB Serbice and keep it open in the background in cases where you have an in-game storefront. This is how you do that:
-
-When you open the store, call:  
-```Java
-StoreController.getInstance().startIabServiceInBg();
-```
-
-When the store is closed, call:  
-```Java
-StoreController.getInstance().stopIabServiceInBg();
-```
-
-Be careful with that. Don't leave the service running in the background without closing it.
 
 
 ## Debugging
@@ -135,7 +174,7 @@ In order to debug android-store, set `StoreConfig.logDebug` to `true`. This will
 ## Storage & Meta-Data
 
 
-When you initialize _StoreController_, it automatically initializes two other classes: _StorageManager_ and _StoreInfo_. _StorageManager_ is the father of all storage related instances in your game. Use it to access tha balances of virtual currencies and virtual goods (usually, using their itemIds). _StoreInfo_ is the mother of all meta data information about your specific game. It is initialized with your implementation of `IStoreAssets` and you can use it to retrieve information about your specific game.  
+When you initialize _StoreController_, it automatically initializes two other classes: _StorageManager_ and _StoreInfo_. _StorageManager_ is the father of all storage related instances in your game. Use it to access the balances of virtual currencies and virtual goods (usually, using their itemIds). _StoreInfo_ is the mother of all meta data information about your specific game. It is initialized with your implementation of `IStoreAssets` and you can use it to retrieve information about your specific game.  
 We've also added _StoreInventory_ which is a utility class to help you do store related operations even easier.
 
 The on-device storage is encrypted and kept in a SQLite database. SOOMLA is preparing a cloud-based storage service that will allow this SQLite to be synced to a cloud-based repository that you'll define.
@@ -147,20 +186,20 @@ The on-device storage is encrypted and kept in a SQLite database. SOOMLA is prep
     ```Java
     StoreInventory.giveVirtualItem("currency_coin", 10);
     ```
-    
+
 * Take 10 virtual goods with itemId "green_hat":
 
     ```Java
     StoreInventory.takeVirtualItem("green_hat", 10);
     ```
-    
+
 * Get the current balance of a virtual good with itemId "green_hat" (here we decided to show you the 'long' way. you can also use StoreInventory):
 
     ```Java
     VirtualGood greenHat = (VirtualGood)StoreInfo.getVirtualItem("green_hat");
     int greenHatsBalance = StorageManager.getVirtualGoodsStorage().getBalance(greenHat);
     ```
-    
+
 ## Security
 
 
@@ -172,26 +211,26 @@ If you want to protect your game from 'bad people' (and who doesn't?!), you migh
 ## Event Handling
 
 
-For event handling, we use Square's great open-source project [otto](http://square.github.com/otto/). In ordered to be notified of store related events, you can register for specific events and create your game-specific behaviour to handle them.
+For event handling, we use Square's great open-source project [otto](http://square.github.com/otto/). In ordered to be notified of store related events, you can register for specific events and create your game-specific behavior to handle them.
 
-> Your behaviour is an addition to the default behaviour implemented by SOOMLA. You don't replace SOOMLA's behaviour.
+> Your behavior is an addition to the default behavior implemented by SOOMLA. You don't replace SOOMLA's behavior.
 
 In order to register for events:
 
 1. In the class that should receive the event create a function with the annotation '@Subscribe'. Example:
 
     ```Java
-    @Subscribe public void onPlayPurchaseEvent(PlayPurchaseEvent playPurchaseEvent) {
+    @Subscribe public void onMarketPurchaseEvent(MarketPurchaseEvent marketPurchaseEvent) {
         ...
     }
     ```
-    
+
 2. You'll also have to register your class in the event bus (and unregister when needed):
 
    ```Java
    BusProvider.getInstance().register(this);
    ```
-   
+
    ```Java
    BusProvider.getInstance().unregister(this);
    ```
@@ -209,7 +248,14 @@ You can find a full event handler example [here](https://github.com/soomla/andro
 
 We want you!
 
-Fork -> Clone -> Implement -> Test -> Pull-Request. We have great RESPECT for contributors.
+Fork -> Clone -> Implement -> Insert Comments -> Test -> Pull-Request.
+
+We have great RESPECT for contributors.
+
+## Code Documentation
+
+
+android-store follows strict code documentation conventions. If you would like to contribute please read our [Documentation Guidelines](https://github.com/soomla/android-store/blob/master/documentation.md) and follow them. Clear, consistent  comments will make our code easy to understand.
 
 ## SOOMLA, Elsewhere ...
 
@@ -220,7 +266,5 @@ Fork -> Clone -> Implement -> Test -> Pull-Request. We have great RESPECT for co
 
 ## License
 
-MIT License. Copyright (c) 2012 SOOMLA. http://project.soom.la
-+ http://www.opensource.org/licenses/MIT
-
-
+Apache License. Copyright (c) 2012-2014 SOOMLA. http://project.soom.la
++ http://opensource.org/licenses/Apache-2.0

@@ -17,7 +17,7 @@
 package com.soomla.store.events;
 
 /**
- * This event is fired when SOOMLA knows that billing is NOT supported on the device.
+ * This event is fired when the market items refresh process has started.
  */
-public class BillingNotSupportedEvent {
+public class MarketItemsRefreshStartedEvent {
 }

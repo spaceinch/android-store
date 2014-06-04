@@ -1,4 +1,5 @@
 /* Copyright (c) 2012 Google Inc.
+ * Revised and edited by SOOMLA for stability and supporting new features.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +33,14 @@ public class IabPurchase {
     private String mToken;
     private String mOriginalJson;
     private String mSignature;
+
+    public IabPurchase(String itemType, String sku, String purchaseToken, String orderId, int purchaseState) {
+        mItemType = itemType;
+        mSku = sku;
+        mToken = purchaseToken;
+        mOrderId = orderId;
+        mPurchaseState = purchaseState;
+    }
 
     public IabPurchase(String itemType, String jsonPurchaseInfo, String signature) throws JSONException {
         mItemType = itemType;
@@ -85,6 +94,10 @@ public class IabPurchase {
 
     public String getSignature() {
         return mSignature;
+    }
+
+    public void setDeveloperPayload(String developerPayload) {
+        mDeveloperPayload = developerPayload;
     }
 
     @Override

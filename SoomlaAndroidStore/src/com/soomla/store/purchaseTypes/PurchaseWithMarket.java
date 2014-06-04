@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,19 +24,19 @@ import com.soomla.store.events.ItemPurchaseStartedEvent;
 import com.soomla.store.exceptions.InsufficientFundsException;
 
 /**
- * This type of IabPurchase allows users to purchase PurchasableVirtualItems with the Market
- * (with real money! $$$).
+ * This type of Purchase is used to let users purchase <code>PurchasableVirtualItem</code>s in the
+ * market with real money $$$.
  *
  * Real Game Example: Purchase a Sword for $1.99.
  */
 public class PurchaseWithMarket extends PurchaseType {
 
     /**
-     * Constructor
-     * Constructs a PurchaseWithMarket object by constructing a new MarketItem object with the
-     * given productId and price, and declaring it as UNMANAGED.
+     * Constructor.
+     * Constructs a PurchaseWithMarket object by constructing a new <code>MarketItem</code> object
+     * with the given <code>productId</code> and price, and declaring it as UNMANAGED.
      *
-     * @param productId the productId to purchase in the Market.
+     * @param productId the productId as it appears in the Market.
      * @param price the price in the Market.
      */
     public PurchaseWithMarket(String productId, double price) {
@@ -44,7 +44,7 @@ public class PurchaseWithMarket extends PurchaseType {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param marketItem the representation of the item in the market
      */

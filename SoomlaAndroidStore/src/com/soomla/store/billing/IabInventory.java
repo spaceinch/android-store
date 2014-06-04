@@ -1,4 +1,5 @@
 /* Copyright (c) 2012 Google Inc.
+ * Revised and edited by SOOMLA for stability and supporting new features.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +23,7 @@ import java.util.Map;
 
 /**
  * Represents a block of information about in-app items.
- * An IabInventory is returned by such methods as {@link IabHelper#queryInventory}.
+ * An IabInventory is returned by such methods as {@link IabHelper#restorePurchasesAsync}.
  */
 public class IabInventory {
     private Map<String,IabSkuDetails> mSkuMap = new HashMap<String,IabSkuDetails>();
@@ -51,7 +52,7 @@ public class IabInventory {
     }
 
     /**
-     * Erase a purchase (locally) from the inventory, given its product ID. This just
+     * Erases a purchase (locally) from the inventory, given its product ID. This just
      * modifies the IabInventory object locally and has no effect on the server! This is
      * useful when you have an existing IabInventory object which you know to be up to date,
      * and you have just consumed an item successfully, which means that erasing its
@@ -77,11 +78,10 @@ public class IabInventory {
     }
 
     /**
-     * Returns a list of all past-queried product IDs (sku)
-     * in the current session
-     * @param excludeOwned - if true, filters ids also present in
-     *                     purchases
-     * @return list of skus
+     * Returns a list of all past-queried product IDs (SKU) in the current session.
+     *
+     * @param excludeOwned if true, filters ids also present in purchases
+     * @return list of SKUs
      */
     public List<String> getAllQueriedSkus(boolean excludeOwned) {
         List<String> result = new ArrayList<String>();

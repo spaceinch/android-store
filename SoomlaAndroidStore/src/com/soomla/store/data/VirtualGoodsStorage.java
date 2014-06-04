@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.data;
 
 import com.soomla.store.BusProvider;
@@ -28,7 +29,7 @@ import com.soomla.store.events.GoodUpgradeEvent;
 import com.soomla.store.exceptions.VirtualItemNotFoundException;
 
 /**
- * This class provides basic storage operations on VirtualGoods.
+ * This class provides basic storage operations on virtual goods.
  */
 public class VirtualGoodsStorage extends VirtualItemStorage{
 
@@ -40,7 +41,7 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * Removes any upgrade associated with the given VirtualGood.
+     * Removes any upgrade associated with the given <code>VirtualGood</code>.
      *
      * @param good the VirtualGood to remove upgrade from
      */
@@ -51,8 +52,8 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     /**
      * Removes any upgrade associated with the given VirtualGood.
      *
-     * @param good the VirtualGood to remove upgrade from
-     * @param notify if notify is true post event to bus
+     * @param good the virtual good to remove the upgrade from
+     * @param notify if true post event to bus
      */
     public void removeUpgrades(VirtualGood good, boolean notify) {
         StoreUtils.LogDebug(mTag, "Removing upgrade information from virtual good: " +
@@ -69,21 +70,21 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * Assigns a specific upgrade to the given VirtualGood.
+     * Assigns a specific upgrade to the given virtual good.
      *
-     * @param good the VirtualGood to upgrade.
-     * @param upgradeVG the upgrade to assign.
+     * @param good the virtual good to upgrade
+     * @param upgradeVG the upgrade to assign
      */
     public void assignCurrentUpgrade(VirtualGood good, UpgradeVG upgradeVG) {
         assignCurrentUpgrade(good, upgradeVG, true);
     }
 
     /**
-     * Assigns a specific upgrade to the given VirtualGood.
+     * Assigns a specific upgrade to the given virtual good.
      *
-     * @param good the VirtualGood to upgrade.
-     * @param upgradeVG the upgrade to assign.
-     * @param notify if notify is true post event to bus
+     * @param good the VirtualGood to upgrade
+     * @param upgradeVG the upgrade to assign
+     * @param notify if true post event to bus
      */
     public void assignCurrentUpgrade(VirtualGood good, UpgradeVG upgradeVG, boolean notify) {
         if (getCurrentUpgrade(good) != null && getCurrentUpgrade(good).getItemId().equals(
@@ -96,7 +97,7 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
 
         String itemId = good.getItemId();
         String key = KeyValDatabase.keyGoodUpgrade(itemId);
-        String upItemId =  upgradeVG.getItemId();
+        String upItemId = upgradeVG.getItemId();
 
         StorageManager.getKeyValueStorage().setValue(key, upItemId);
 
@@ -106,10 +107,10 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * Retrieves the current upgrade for the given VirtualGood.
+     * Retrieves the current upgrade for the given virtual good.
      *
-     * @param good the VirtualGood to retrieve upgrade for.
-     * @return the current upgrade for the given VirtualGood.
+     * @param good the virtual good to retrieve upgrade for
+     * @return the current upgrade for the given virtual good
      */
     public UpgradeVG getCurrentUpgrade(VirtualGood good) {
         StoreUtils.LogDebug(mTag, "Fetching upgrade to virtual good: " + good.getName());
@@ -139,9 +140,9 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * Checks if the given EquippableVG is currently equipped or not.
+     * Checks if the given <code>EquippableVG</code> is currently equipped or not.
      *
-     * @param good the EquippableVG to check the status for
+     * @param good the <code>EquippableVG</code> to check the status for
      * @return true if the given good is equipped, false otherwise
      */
     public boolean isEquipped(EquippableVG good){
@@ -156,16 +157,16 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * Equips the given EquippableVG.
+     * Equips the given <code>EquippableVG</code>.
      *
-     * @param good the EquippableVG to equip
+     * @param good the <code>EquippableVG</code> to equip
      */
     public void equip(EquippableVG good) {
         equip(good, true);
     }
 
     /**
-     * Equips the given EquippableVG.
+     * Equips the given <code>EquippableVG</code>.
      *
      * @param good the EquippableVG to equip
      * @param notify if notify is true post event to bus
@@ -178,19 +179,19 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * UnEquips the given EquippableVG.
+     * UnEquips the given <code>EquippableVG</code>.
      *
-     * @param good the EquippableVG to unequip
+     * @param good the <code>EquippableVG</code> to unequip
      */
     public void unequip(EquippableVG good) {
         unequip(good, true);
     }
 
     /**
-     * UnEquips the given EquippableVG.
+     * UnEquips the given <code>EquippableVG</code>.
      *
-     * @param good the EquippableVG to unequip
-     * @param notify if notify is true post event to bus
+     * @param good the <code>EquippableVG</code> to unequip
+     * @param notify if true post event to bus
      */
     public void unequip(EquippableVG good, boolean notify) {
         if (!isEquipped(good)) {
@@ -200,10 +201,7 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * see parent
-     *
-     * @param itemId id of the virtual item whose balance is to be retrieved
-     * @return
+     * @{inheritDoc}
      */
     @Override
     protected String keyBalance(String itemId) {
@@ -211,11 +209,7 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * see parent
-     *
-     * @param item virtual item whose balance has changed
-     * @param balance the balance that has changed
-     * @param amountAdded the amount added to the item's balance
+     * @{inheritDoc}
      */
     @Override
     protected void postBalanceChangeEvent(VirtualItem item, int balance, int amountAdded) {
@@ -224,7 +218,7 @@ public class VirtualGoodsStorage extends VirtualItemStorage{
     }
 
     /**
-     * Helper function for equip and unequip functions
+     * Helper function for <code>equip</code> and <code>unequip</code> functions.
      */
     private void equipPriv(EquippableVG good, boolean equip, boolean notify){
         StoreUtils.LogDebug(mTag, (!equip ? "unequipping " : "equipping ") + good.getName() + ".");

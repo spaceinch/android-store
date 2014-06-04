@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.domain.virtualCurrencies;
 
 import com.soomla.store.data.StorageManager;
@@ -28,9 +29,10 @@ import org.json.JSONObject;
  * Real Game Examples: 'Coin', 'Gem', 'Muffin'
  *
  * NOTE: This item is NOT purchasable!
- * However, a VirtualCurrencyPack IS purchasable.
+ * However, a <code>VirtualCurrencyPack</code> IS purchasable.
  * For example, if the virtual currency in your game is a 'Coin' and you want to make a single
- * 'Coin' available for purchase you will need to define a VirtualCurrencyPack of 1'Coin'.
+ * 'Coin' available for purchase you will need to define a <code>VirtualCurrencyPack</code> of 1
+ * 'Coin'.
  */
 public class VirtualCurrency extends VirtualItem {
 
@@ -38,9 +40,9 @@ public class VirtualCurrency extends VirtualItem {
      * Constructor
      * see parent
      *
-     * @param mName see parent
-     * @param mDescription see parent
-     * @param itemId see parent
+     * @param mName the name of the virtual item
+     * @param mDescription the description of the virtual item
+     * @param itemId the itemId of the virtual item
      */
     public VirtualCurrency(String mName, String mDescription, String itemId) {
         super(mName, mDescription, itemId);
@@ -49,7 +51,7 @@ public class VirtualCurrency extends VirtualItem {
     /**
      * Constructor
      *
-     * @param jsonObject see parent
+     * @param jsonObject a JSONObject representation of the wanted VirtualItem
      * @throws JSONException
      */
     public VirtualCurrency(JSONObject jsonObject) throws JSONException {
@@ -67,10 +69,7 @@ public class VirtualCurrency extends VirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @param amount see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int give(int amount, boolean notify) {
@@ -78,10 +77,7 @@ public class VirtualCurrency extends VirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @param amount see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int take(int amount, boolean notify) {
@@ -89,10 +85,7 @@ public class VirtualCurrency extends VirtualItem {
     }
 
     /**
-     * see parent
-     *
-     * @param balance see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int resetBalance(int balance, boolean notify) {

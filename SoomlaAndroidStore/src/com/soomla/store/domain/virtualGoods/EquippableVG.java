@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,41 +38,47 @@ import java.util.Iterator;
  * The EquippableVG's characteristics are:
  *  1. Can be purchased only once.
  *  2. Can be equipped by the user.
- *  3. Inherits the definition of LifetimeVG.
+ *  3. Inherits the definition of <code>LifetimeVG</code>.
  *
- * There are 3 ways to equip an EquippableVG:
- *  1. LOCAL    - The current EquippableVG's equipping status doesn't affect any other EquippableVG.
- *  2. CATEGORY - In the containing category, if this EquippableVG is equipped, all other
- *                EquippableVGs must stay unequipped.
- *  3. GLOBAL   - In the whole game, if this EquippableVG is equipped, all other EquippableVG's
- *                must stay unequipped.
+ * There are 3 ways to equip an <code>EquippableVG</code>:
+ *  1. LOCAL    - The current <code>EquippableVG</code>'s equipping status doesn't affect any other
+ *     <code>EquippableVG</code>.
+ *  2. CATEGORY - In the containing category, if this <code>EquippableVG</code> is equipped, all other
+ *                <code>EquippableVG</code>s must stay unequipped.
+ *  3. GLOBAL   - In the whole game, if this <code>EquippableVG</code> is equipped, all other
+ *  <code>EquippableVG</code>'s must stay unequipped.
  *
  * Real Game Examples:
  *  1. LOCAL: Say your game offers 3 weapons: a sword, a gun, and an axe (LifetimeVGs). Let’s
  *  suppose your user has already bought all 3. These are euippables that do not affect one another
- *  - your user can “carry” the sword, gun, and axe at the same time if he chooses to!
+ *  - your user can “carry” the sword, gun, and axe at the same time if they chooses to!
  *
  *  2. CATEGORY: Suppose your game offers “shirts” and “hats”. Let’s say there are 4 available
  *  shirts and 2 available hats, and your user has already purchased all of the clothing items
- *  available. He can equip a shirt and a hat at the same time, but cannot equip more than 1 shirt
- *  or more than 1 hat at the same time. In other words, he can equip at most one of each clothing
+ *  available. They can equip a shirt and a hat at the same time, but cannot equip more than 1 shirt
+ *  or more than 1 hat at the same time. In other words, they can equip at most one of each clothing
  *  category (shirts, hats)!
  *
- *  3. GLOBAL: Suppose your game offers multiple characters (LifetimeVGs): RobotX and RobotY.
- *  Let’s say your user has bought both. In other words he owns both characters and will own them
- *  forever (because they are LifetimeVGs) . Your user can only play as (i.e. Equip) one character
+ *  3. GLOBAL: Suppose your game offers multiple characters (<code>LifetimeVGs</code>): RobotX and
+ *  RobotY. Let’s say your user owns both characters. They will own them forever (because they are
+ *  <code>LifetimeVG</code>'s). Your user can only play as (i.e. Equip) one character
  *  at a time, either RobotX or RobotY, but never both at the same time!
  *
- * NOTE: In case you want this item to be available for purchase in the market (PurchaseWithMarket),
+ * NOTE: In case you want this item to be available for purchase with real money
  * you will need to define it in the market (Google Play, Amazon App Store, etc...).
  *
- * Inheritance: EquippableVG > LifeTimeVG > VirtualGood > PurchasableVirtualItem > VirtualItem
+ * Inheritance: EquippableVG >
+ * {@link com.soomla.store.domain.virtualGoods.LifetimeVG} >
+ * {@link com.soomla.store.domain.virtualGoods.VirtualGood} >
+ * {@link com.soomla.store.domain.PurchasableVirtualItem} >
+ * {@link com.soomla.store.domain.VirtualItem}
  */
 public class EquippableVG extends LifetimeVG{
 
     /** Constructor
      *
-     * @param equippingModel the way this EquippableVG is equipped - local, category, or global
+     * @param equippingModel the way this <code>EquippableVG</code> is equipped - local, category,
+     *                       or global
      * @param mName see parent
      * @param mDescription see parent
      * @param mItemId see parent
@@ -107,9 +113,7 @@ public class EquippableVG extends LifetimeVG{
     }
 
     /**
-     * see parent
-     *
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public JSONObject toJSONObject() {
@@ -132,7 +136,7 @@ public class EquippableVG extends LifetimeVG{
     }
 
     /**
-     * Equips the current EquippableVG
+     * Equips the current <code>EquippableVG</code>
      *
      * @throws NotEnoughGoodsException
      */
@@ -141,10 +145,10 @@ public class EquippableVG extends LifetimeVG{
     }
 
     /**
-     * Equips the current EquippableVG.
+     * Equips the current <code>EquippableVG</code>.
      * The equipping is done according to the equipping model ('GLOBAL', 'CATEGORY', or 'LOCAL').
      *
-     * @param notify if notify is true post event to bus
+     * @param notify if true post event to bus
      * @throws NotEnoughGoodsException
      */
     public void equip(boolean notify) throws NotEnoughGoodsException {
@@ -197,14 +201,14 @@ public class EquippableVG extends LifetimeVG{
     }
 
     /**
-     * Unequips the current EquippableVG
+     * Unequips the current <code>EquippableVG</code>
      */
     public void unequip() {
         unequip(true);
     }
 
     /**
-     * Unequips the current EquippableVG
+     * Unequips the current <code>EquippableVG</code>
      *
      * @param notify
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ import com.soomla.store.domain.PurchasableVirtualItem;
 import com.soomla.store.exceptions.InsufficientFundsException;
 
 /**
- * A PurchaseType is a way to purchase a PurchasableVirtualItem. This abstract class describes
- * basic features of the actual implementations of PurchaseType.
+ * A <code>PurchaseType</code> is a way to purchase a <code>PurchasableVirtualItem</code>. This
+ * abstract class describes basic features of the actual implementations of <code>PurchaseType<code>.
  */
 public abstract class PurchaseType {
 
-    /**
-     * Buys the virtual item.
+    /*
+     * Buys the purchasable virtual item.
      * Implementation in subclasses will be according to specific type of purchase.
      *
      * @throws com.soomla.store.exceptions.InsufficientFundsException

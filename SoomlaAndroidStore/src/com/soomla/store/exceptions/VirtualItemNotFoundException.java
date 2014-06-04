@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.exceptions;
 
 /**
- * This exception is thrown when looking for a Virtual Item that cannot be found.
+ * This exception is thrown when looking for a <code>VirtualItem</code> that cannot be found.
  */
 public class VirtualItemNotFoundException extends Exception {
 
     /**
      * Constructor
      *
-     * @param lookupBy
-     * @param lookupVal
+     * @param lookupBy the field of the virtual item to look for
+     * @param lookupVal the value of the field to look for
      */
     public VirtualItemNotFoundException(String lookupBy, String lookupVal) {
         super("Virtual item was not found when searching with " + lookupBy + "=" + lookupVal);

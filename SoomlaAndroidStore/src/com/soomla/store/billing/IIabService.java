@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.soomla.store.billing;
 
-import android.app.Activity;
-import android.content.Intent;
+package com.soomla.store.billing;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ import java.util.List;
 public interface IIabService {
 
     /**
-     * Checks if in-app billing service is initialized
+     * Checks if in-app billing service is initialized.
      *
      * @return true if Iab is initialized, false otherwise
      */
@@ -55,66 +53,60 @@ public interface IIabService {
                              final IabCallbacks.OnConsumeListener consumeListener);
 
     /**
-     * Handles an activity result that's part of the purchase flow in in-app billing.
-     * This method MUST be called from the UI thread of the Activity.
-     *
-     * @param requestCode the requestCode
-     * @param resultCode the resultCode
-     * @param data the data (Intent)
-     * @return true if the result was related to a purchase flow and was handled, false otherwise.
-     */
-    public boolean handleActivityResult(int requestCode, int resultCode, Intent data);
-
-    /**
      * Initiates the UI flow for an in-app purchase.
      * Call this method to initiate an in-app purchase which will bring up the Market screen.
      * The calling activity will be paused while the user interacts with the Market.
      * This method MUST be called from the UI thread of the Activity.
      *
-     * @param act the calling activity.
      * @param sku the sku of the item to purchase.
      * @param purchaseListener the listener to notify when the purchase process finishes
      * @param extraData extra data (developer payload), which will be returned with the purchase
      *                  data when the purchase completes.
      */
-    public void launchPurchaseFlow(Activity act,
-                                   String sku,
+    public void launchPurchaseFlow(String sku,
                                    final IabCallbacks.OnPurchaseListener purchaseListener,
                                    String extraData);
 
     /**
-     * Queries the inventory asynchronously - will query all owned items from the server according
-     * to the given querySkuDetails. If given, will query moreSkus also, and lastly, will
-     * call back the given queryInventoryListener upon completion.
-     * This method is safe to call from a UI thread.
+     * Restores transactions asynchronously. This operation will get all previously purchased
+     * non-consumables and invoke the given callback.
      *
-     * @param querySkuDetails if true, SKU details (price, description, etc) and purchase
-     *                        information will be queried.
-     * @param moreSkus if given, additional PRODUCT skus to query information on.
-     * @param queryInventoryListener the listener to notify when the query operation completes.
+     * @param restorePurchasesListener the listener to notify when the query operation completes.
      */
-    public void queryInventoryAsync(boolean querySkuDetails,
-                                    List<String> moreSkus,
-                                    IabCallbacks.OnQueryInventoryListener queryInventoryListener);
+    public void restorePurchasesAsync(IabCallbacks.OnRestorePurchasesListener restorePurchasesListener);
 
     /**
-     * Initializes in-app billing service and notifies the given listener upon completion.
+     * Fetches all details for the given skus. The details is what the developer provided on
+     * the developer console.
      *
-     * @param initListener the listener to notify when the initialization process completes
+     * @param fetchSkusDetailsListener the listener to notify when the query operation completes.
+     */
+    public void fetchSkusDetailsAsync(List<String> skus, IabCallbacks.OnFetchSkusDetailsListener fetchSkusDetailsListener);
+
+    /**
+     * Initializes in-app billing service and notifies the given <code>initListener</code> upon
+     * completion.
+     *
+     * @param initListener the listener to notify when the <code>initializeBillingService</code>
+     *                     process completes.
      */
     public void initializeBillingService(IabCallbacks.IabInitListener initListener);
 
     /**
-     * Starts in-app billing service in background and notifies the given listener upon completion.
+     * Starts in-app billing service in background and notifies the given <code>initListener</code>
+     * upon completion.
      *
-     * @param initListener the listener to notify when the startIabServiceInBg process completes
+     * @param initListener the listener to notify when the <code>startIabServiceInBg</code> process
+     *                     completes.
      */
     public void startIabServiceInBg(IabCallbacks.IabInitListener initListener);
 
     /**
-     * Stops in-app billing service in background and notifies the given listener upon completion.
+     * Stops in-app billing service in background and notifies the given <code>initListener</code>
+     * upon completion.
      *
-     * @param initListener the listener to notify when the stopIabServiceInBg process completes
+     * @param initListener the listener to notify when the <code>stopIabServiceInBg</code> process
+     *                     completes.
      */
     public void stopIabServiceInBg(IabCallbacks.IabInitListener initListener);
 

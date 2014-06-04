@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,19 +22,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * SingleUse virtual goods are the most common type of VirtualGood.
+ * Single use virtual goods are the most common type of <code>VirtualGood</code>.
  *
- * The SingleUseVG's characteristics are:
+ * The <code>SingleUseVG</code>'s characteristics are:
  *  1. Can be purchased an unlimited number of times.
  *  2. Has a balance that is saved in the database. Its balance goes up when you "give" it or
  *     "buy" it. The balance goes down when you "take" or (unfriendly) "refund" it.
  *
  * Real Game Examples: 'Hat', 'Sword', 'Muffin'
  *
- * NOTE: In case you want this item to be available for purchase in the market (PurchaseWithMarket),
+ * NOTE: In case you want this item to be available for purchase with real money
  * you will need to define the item in the market (Google Play, Amazon App Store, etc...).
  *
- * Inheritance: SingleUseVG > VirtualGood > PurchasableVirtualItem > VirtualItem
+ * Inheritance: SingleUseVG} >
+ * {@link com.soomla.store.domain.virtualGoods.VirtualGood} >
+ * {@link com.soomla.store.domain.PurchasableVirtualItem} >
+ * {@link com.soomla.store.domain.VirtualItem}
  */
 public class SingleUseVG extends VirtualGood{
 
@@ -61,9 +64,7 @@ public class SingleUseVG extends VirtualGood{
     }
 
     /**
-     * see parent
-     *
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public JSONObject toJSONObject() {
@@ -71,10 +72,7 @@ public class SingleUseVG extends VirtualGood{
     }
 
     /**
-     * see parent
-     *
-     * @param amount see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int give(int amount, boolean notify) {
@@ -82,10 +80,7 @@ public class SingleUseVG extends VirtualGood{
     }
 
     /**
-     * see parent
-     *
-     * @param amount see parent
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     public int take(int amount, boolean notify) {
@@ -93,9 +88,9 @@ public class SingleUseVG extends VirtualGood{
     }
 
     /**
-     * Determines if user is in a state that allows him to buy a SingleUseVG.
+     * Determines if user is in a state that allows him/her to buy a <code>SingleUseVG</code>.
      *
-     * @return true - users can ALWAYS purchase SingleUseVGs
+     * @return true - users can ALWAYS purchase <code>SingleUseVG</code>s.
      */
     @Override
     protected boolean canBuy() {

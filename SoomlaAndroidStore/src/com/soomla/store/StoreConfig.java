@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store;
 
 import com.soomla.store.billing.IIabService;
+//import com.soomla.store.billing.google.GooglePlayIabService;
 
 /**
  * This class holds the store's configurations.
  *
- * IMPORTANT: Change SOOM_SEC below !!!
- * IMPORTANT: Change obfuscationSalt below !!!
- * IMPORTANT: Before releasing your game, set DB_DELETE = false !!!
- * IMPORTANT: Before releasing your game, set AllowAndroidTestPurchases = false !!!
+ * IMPORTANT: Change <code>SOOM_SEC</code> below !!!
+ * IMPORTANT: Change <code>obfuscationSalt</code> below !!!
+ * IMPORTANT: Before releasing your game, set <code>DB_DELETE</code> to false !!!
+ * IMPORTANT: Before releasing your game, set <code>AllowAndroidTestPurchases</code> to false !!!
  */
 public class StoreConfig {
 
@@ -32,7 +34,7 @@ public class StoreConfig {
      * The default is Google Play using https://github.com/soomla/android-store-google-play
      * If this value is left empty, you will not be able to release your game to the market.
      */
-    public static IIabService InAppBillingService;
+//    public static final IIabService InAppBillingService = null;
 
     //CHANGE THIS SECRET!!!
     public static String SOOM_SEC = "SINC_SSEEKK";
@@ -40,6 +42,8 @@ public class StoreConfig {
     //Set to true if you want to print out debug messages
     public static final boolean logDebug = true;
 
+    // A friendlyRefunds tells android-store if to let your refunded users keep their VirtualItems
+    // after a refund or not. (default: false)
     public static final boolean friendlyRefunds = false;
 
     public static String RECEIPT_VALIDATOR = null;
@@ -61,26 +65,19 @@ public class StoreConfig {
     /**
      * If this is true then the database will be deleted whenever the application loads.
      *
-     * WARNING: Do NOT release your game with this option set to true !!!!!!!!!!!!
+     * WARNING: Do NOT release your game with this option set to true!
      * Otherwise, your users will lose all their data every time they load the application.
      *
      * NOTE: this feature can be useful for testing when you want to change stuff in your
-     * implementation of IStoreAssets and see what they look like. If you try to change things
-     * in IStoreAssets and don't delete the DB then your changes will not be shown.
+     * implementation of <code>IStoreAssets</code> and see what they look like. If you try to
+     * change things in <code>IStoreAssets</code> and don't delete the DB then your changes will
+     * not be shown.
      */
     public static final boolean DB_DELETE = false;
 
     /** Shared Preferences **/
     public static final String PREFS_NAME      = "store.prefs";
     public static final String DB_INITIALIZED  = "db_initialized";
-    public static final String PUBLIC_KEY      = "PO#SU#SO#GU";
     public static final String CUSTOM_SEC      = "SU#LL#SE#RE";
 
-    /**
-     * When set to true, this removes the need to verify purchases when there's no signature.
-     * This is useful while you are in development and testing stages of your game.
-     *
-     * WARNING: Do NOT publish your app with this set to true!!!
-     */
-    public static boolean AllowAndroidTestPurchases = false;
 }

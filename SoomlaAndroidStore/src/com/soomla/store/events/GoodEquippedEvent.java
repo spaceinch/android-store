@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.events;
 
 import com.soomla.store.domain.virtualGoods.EquippableVG;
 
 /**
- * This event is fired when the balance of a specific EquippableVG has been equipped.
+ * This event is fired when a specific <code>EquippableVG</code> has been equipped.
  *
  * Real Game Example:
  *  Example Inventory: { currency_coin: 100, Characters: Robot_X, Robot_Y }
  *  Suppose your user equips Robot_X.
- *  His new balance of Characters will be { Characters: Robot_Y }.
- *  A GoodEquippedEvent is fired.
+ *  His/her new balance of Characters will be { Characters: Robot_Y }.
+ *  A <code>GoodEquippedEvent</code> is fired.
  */
 public class GoodEquippedEvent {
     /**

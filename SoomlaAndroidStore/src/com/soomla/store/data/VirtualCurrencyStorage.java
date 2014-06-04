@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
 import com.soomla.store.events.CurrencyBalanceChangedEvent;
 
 /**
- * This class provides basic storage operations on VirtualCurrencies.
+ * This class provides basic storage operations on virtual currencies.
  */
 public class VirtualCurrencyStorage extends VirtualItemStorage{
 
@@ -35,10 +35,7 @@ public class VirtualCurrencyStorage extends VirtualItemStorage{
     }
 
     /**
-     * see parent
-     *
-     * @param itemId id of the virtual item whose balance is to be retrieved
-     * @return see parent
+     * @{inheritDoc}
      */
     @Override
     protected String keyBalance(String itemId) {
@@ -46,11 +43,7 @@ public class VirtualCurrencyStorage extends VirtualItemStorage{
     }
 
     /**
-     * see parent
-     *
-     * @param item virtual item whose balance has changed
-     * @param balance the balance that has changed
-     * @param amountAdded the amount added to the item's balance
+     * @{inheritDoc}
      */
     @Override
     protected void postBalanceChangeEvent(VirtualItem item, int balance, int amountAdded) {

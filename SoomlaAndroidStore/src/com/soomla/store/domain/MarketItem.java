@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.domain;
 
 import com.soomla.store.StoreUtils;
@@ -22,16 +23,16 @@ import org.json.JSONObject;
 
 /**
  * A representation of an item in the market.
- * MarketItem is only used for PurchaseWithMarket purchase type.
+ * <code>MarketItem</code> is only used for <code>PurchaseWithMarket</code> purchase type.
  */
 public class MarketItem {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param mProductId the Id of the current item in the market.
-     * @param mManaged the Managed type of the current item in the market.
-     * @param mPrice the actual $$ cost of the current item in the market.
+     * @param mProductId the id of the current item in the market
+     * @param mManaged the Managed type of the current item in the market
+     * @param mPrice the actual $$ cost of the current item in the market
      */
     public MarketItem(String mProductId, Managed mManaged, double mPrice) {
         this.mProductId = mProductId;
@@ -40,10 +41,11 @@ public class MarketItem {
     }
 
     /**
-     * Constructor
+     * Constructor.
+     * Generates an instance of <code>MarketItem</code> from a <code>JSONObject</code>.
      *
-     * Generates an instance of {@link MarketItem} from a JSONObject.
-     * @param jsonObject is a JSONObject representation of the wanted {@link MarketItem}.
+     * @param jsonObject a <code>JSONObject</code> representation of the wanted
+     *                   <code>MarketItem</code>.
      * @throws JSONException
      */
     public MarketItem(JSONObject jsonObject) throws JSONException {
@@ -61,9 +63,9 @@ public class MarketItem {
     }
 
     /**
-     * Converts the current VirtualItem to a {@link JSONObject}.
+     * Converts the current <code>MarketItem</code> to a <code>JSONObject</code>.
      *
-     * @return a {@link JSONObject} representation of the current VirtualItem.
+     * @return A <code>JSONObject</code> representation of the current <code>MarketItem</code>.
      */
     public JSONObject toJSONObject(){
         JSONObject jsonObject = new JSONObject();
@@ -86,7 +88,7 @@ public class MarketItem {
             	jsonObject.put(JSONConsts.MARKETITEM_MARKET_PRICE_WITH_CURRENCY_SYMBOL, mMarketPriceWithCurrencySymbol);
             }          
         } catch (JSONException e) {
-            StoreUtils.LogError(TAG, "An error occured while generating JSON object.");
+            StoreUtils.LogError(TAG, "An error occurred while generating JSON object.");
         }
 
         return jsonObject;
@@ -98,7 +100,7 @@ public class MarketItem {
      * a game). This purchase is remembered by the Market and can be restored if this
      * application is uninstalled and then re-installed.
      * UNMANAGED is used for products that can be used up and purchased multiple times (such as
-     * poker chips). It is up to the application to keep track of UNMANAGED products for the user.
+     * "gold coins"). It is up to the application to keep track of UNMANAGED products for the user.
      * SUBSCRIPTION is just like MANAGED except that the user gets charged periodically (monthly
      * or yearly).
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,20 +28,20 @@ import com.soomla.store.exceptions.InsufficientFundsException;
 import com.soomla.store.exceptions.VirtualItemNotFoundException;
 
 /**
- * This type of IabPurchase allows users to purchase PurchasableVirtualItems with other
- * VirtualItems.
+ * This type of purchase allows users to purchase <code>PurchasableVirtualItems</code> with other
+ * <code>VirtualItems</code>.
  *
- * Real Game Example: Purchase a Sword in exchange for 100 Gems. Sword is the item to be purchased,
- * Gem is the target item, and 100 is the amount.
+ * Real Game Example: Purchase a Sword in exchange for 100 Gems. 'Sword' is the item to be
+ * purchased, 'Gem' is the target item, and 100 is the amount.
  */
 public class PurchaseWithVirtualItem extends PurchaseType {
 
     /**
      * Constructor
      *
-     * @param targetItemId the itemId of the VirtualItem that is used to "pay" in order to
-     *                     make the purchase
-     * @param amount the number of target items needed in order to make the purchase
+     * @param targetItemId the itemId of the <code>VirtualItem</code> that is used to "pay" in
+     *                     order to make the purchase.
+     * @param amount the number of target items needed in order to make the purchase.
      */
     public PurchaseWithVirtualItem(String targetItemId, int amount) {
         mTargetItemId = targetItemId;
@@ -50,6 +50,8 @@ public class PurchaseWithVirtualItem extends PurchaseType {
 
     /**
      * Buys the virtual item with other virtual items.
+     *
+     * @throws com.soomla.store.exceptions.InsufficientFundsException
      */
     @Override
     public void buy() throws InsufficientFundsException{

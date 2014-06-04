@@ -1,4 +1,5 @@
 /* Copyright (c) 2012 Google Inc.
+ * Revised and edited by SOOMLA for stability and supporting new features.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,9 +33,14 @@ public class IabSkuDetails {
     private String mPriceWithCurrencySymbol;
     private String mCurrencyCode;
 
-//    public IabSkuDetails(String jsonSkuDetails) throws JSONException {
-//        this(IabHelper.ITEM_TYPE_INAPP, jsonSkuDetails);
-//    }
+    public IabSkuDetails(String itemType, String sku, String price, String title,
+                         String description) {
+        mItemType = itemType;
+        mSku = sku;
+        mPrice = price;
+        mTitle = title;
+        mDescription = description;
+    }
 
     public IabSkuDetails(String itemType, String jsonSkuDetails) throws JSONException {
         mItemType = itemType;

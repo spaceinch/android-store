@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.events;
 
 
@@ -21,16 +22,16 @@ import com.soomla.store.domain.MarketItem;
 import java.util.List;
 
 /**
- * This event is fired when items associated with market are refreshed (prices, titles ...)
+ * This event is fired when items associated with market are refreshed (prices, titles ...).
  */
-public class MarketItemsRefreshed {
+public class MarketItemsRefreshFinishedEvent {
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param marketItems
      */
-    public MarketItemsRefreshed(List<MarketItem> marketItems) {
+    public MarketItemsRefreshFinishedEvent(List<MarketItem> marketItems) {
         this.mMarketItems = marketItems;
     }
 

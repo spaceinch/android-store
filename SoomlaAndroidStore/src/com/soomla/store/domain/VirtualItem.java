@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.domain;
 
 import com.soomla.store.StoreUtils;
@@ -24,12 +25,12 @@ import org.json.JSONObject;
  * This is the parent class of all virtual items in the application.
  * Almost every entity in your virtual economy will be a virtual item. There are many types
  * of virtual items, each one will extend this class. Each one of the various types extends
- * VirtualItem and adds its own behavior on top of it.
+ * <code>VirtualItem</code> and adds its own behavior on top of it.
  */
 public abstract class VirtualItem {
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param mName the name of the virtual item
      * @param mDescription the description of the virtual item
@@ -42,10 +43,10 @@ public abstract class VirtualItem {
     }
 
     /**
-     * Constructor
-     * Generates an instance of VirtualItem from a {@link JSONObject}.
+     * Constructor.
+     * Generates an instance of <code>VirtualItem</code> from the given <code>JSONObject</code>.
      *
-     * @param jsonObject a JSONObject representation of the wanted VirtualItem.
+     * @param jsonObject A JSONObject representation of the wanted <code>VirtualItem</code>.
      * @throws JSONException
      */
     public VirtualItem(JSONObject jsonObject) throws JSONException{
@@ -58,9 +59,9 @@ public abstract class VirtualItem {
     }
 
     /**
-     * Converts the current VirtualItem to a {@link JSONObject}.
+     * Converts the current <code>VirtualItem</code> to a JSONObject.
      *
-     * @return a {@link JSONObject} representation of the current VirtualItem.
+     * @return A <code>JSONObject</code> representation of the current <code>VirtualItem</code>.
      */
     public JSONObject toJSONObject(){
         JSONObject jsonObject = new JSONObject();
@@ -77,11 +78,11 @@ public abstract class VirtualItem {
 
     /**
      * Gives your user the given amount of the specific virtual item.
-     * For example, when your user plays your game for the first time you GIVE him 1000 gems.
+     * For example, when your users play your game for the first time you GIVE them 1000 gems.
      *
-     * NOTE: This action is different than buy() (a method of PurchasableVirtualItems):
-     * You use give(int amount) to give your user something for free.
-     * You use buy() to give your user something and get something in return.
+     * NOTE: This action is different than <code>PurchasableVirtualItem</code>'s <code>buy()</code>:
+     * You use <code>give(int amount)</code> to give your user something for free.
+     * You use <code>buy()</code> to give your user something and get something in return.
      *
      * @param amount the amount of the specific item to be given
      * @return balance after the giving process
@@ -102,6 +103,7 @@ public abstract class VirtualItem {
 
     /**
      * Takes from your user the given amount of the specific virtual item.
+     * For example, when your user requests a refund, you need to TAKE the item he/she is returning.
      *
      * @param amount the amount of the specific item to be taken
      * @return balance after the taking process
@@ -121,7 +123,7 @@ public abstract class VirtualItem {
     public abstract int take(int amount, boolean notify);
 
     /**
-     * Resets the balance to the given balance.
+     * Resets this <code>VirtualItem</code>'s balance to the given balance.
      *
      * @param balance the balance of the current virtual item
      * @return balance after the reset process
@@ -142,7 +144,7 @@ public abstract class VirtualItem {
 
     /**
      * Checks if the given object is equal to this object, by comparing the given object's
-     * item id with this VirtualItem's itemId
+     * item id with this <code>VirtualItem</code>'s itemId
      *
      * @param o the object to compare
      * @return true if the objects are equal, otherwise false
@@ -158,9 +160,7 @@ public abstract class VirtualItem {
     }
 
     /**
-     * Returns the hashCode of mItemId if it exists
-     *
-     * @return the hashCode of mItemId
+     * @{inheritDoc}
      */
     @Override
     public int hashCode() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.events;
 
 import com.soomla.store.domain.virtualGoods.UpgradeVG;
 import com.soomla.store.domain.virtualGoods.VirtualGood;
 
 /**
- * This event is fired when the balance of a specific EquippableVG has been upgraded/downgraded.
+ * This event is fired when a specific <code>UpgradeVG</code> has been upgraded/downgraded.
  *
  * Real Game Example:
  *  Example Inventory: { currency_coin: 100, Characters: Robot_X_1 }
  *  Suppose your user upgrades "Characters". Robot_X_1 is the first Robot_X in the series.
- *  After the upgrade, his new balance of Characters will be { Characters: Robot_X_2 }.
- *  A GoodUpgradeEvent is fired.
+ *  After the upgrade, his/her new balance of Characters will be { Characters: Robot_X_2 }.
+ *  A <code>GoodUpgradeEvent</code> is fired.
  */
 public class GoodUpgradeEvent {
 

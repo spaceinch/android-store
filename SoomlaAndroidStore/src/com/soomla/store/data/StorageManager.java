@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.data;
 
 import com.soomla.store.domain.VirtualItem;
@@ -44,6 +45,13 @@ public class StorageManager {
         return mKeyValueStorage;
     }
 
+    /**
+     * Checks whether the given item belongs to <code>VirtualGoodStorage</code> or
+     * <code>VirtualCurrencyStorage</code>.
+     *
+     * @param item the item to check what type of storage it belongs to.
+     * @return the type of VirtualItemStorage.
+     */
     public static VirtualItemStorage getVirtualItemStorage(VirtualItem item) {
         VirtualItemStorage storage = null;
         if (item instanceof VirtualGood) {

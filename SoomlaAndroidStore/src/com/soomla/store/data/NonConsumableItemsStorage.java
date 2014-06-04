@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ public class NonConsumableItemsStorage {
     }
 
     /**
-     * Checks if the given non-consumable {@link NonConsumableItem} exists.
+     * Checks if the given {@link NonConsumableItem} exists.
      *
-     * @param nonConsumableItem the required non-consumable {@link NonConsumableItem}.
+     * @param nonConsumableItem the non-consumable to check if exists.
      * @return true if the given item exists, false otherwise.
      */
     public boolean nonConsumableItemExists(NonConsumableItem nonConsumableItem){

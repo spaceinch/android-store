@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.events;
 
 import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
 
 /**
- * This event is fired when the balance of a specific VirtualCurrency has changed.
+ * This event is fired when the balance of a specific <code>VirtualCurrency</code> has changed.
  *
  * Real Game Example:
  *  Example Inventory: { currency_coin: 100, green_hat: 3, blue_hat: 5 }
  *  Suppose your user buys something for 10 "Coins".
- *  His new balance of currency_coin will now be 90.
- *  A CurrencyBalanceChangedEvent is fired.
+ *  His/her new balance of currency_coin will now be 90.
+ *  A <code>CurrencyBalanceChangedEvent</code> is fired.
  */
 public class CurrencyBalanceChangedEvent {
 

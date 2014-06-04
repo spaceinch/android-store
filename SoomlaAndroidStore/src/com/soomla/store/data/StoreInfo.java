@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Soomla Inc.
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.data;
 
 import android.text.TextUtils;
@@ -36,24 +37,24 @@ import java.util.*;
 
 /**
  * This class holds the store's metadata including:
- * - Virtual Currencies
- * - Virtual Currency Packs
- * - All kinds of Virtual Goods
- * - Virtual Categories
- * - NonConsumable Items
+ * virtual currencies,
+ * virtual currency packs,
+ * all kinds of virtual goods,
+ * virtual categories, and
+ * non-consumable items
  */
 public class StoreInfo {
 
     /**
-     * Initializes StoreInfo, either from IStoreAssets or from database.
+     * Initializes <code>StoreInfo</code>.
      * On first initialization, when the database doesn't have any previous version of the store
-     * metadata, StoreInfo gets loaded from the given {@link IStoreAssets}.
-     * After the first initialization, StoreInfo will be initialized from the database.
+     * metadata, <code>StoreInfo</code> gets loaded from the given <code>IStoreAssets</code>.
+     * After the first initialization, <code>StoreInfo</code> will be initialized from the database.
      *
-     * IMPORTANT: If you want to override the current StoreInfo, you'll have to bump the version
-     * of your implementation of IStoreAssets in order to remove the metadata when the application
-     * loads. Bumping the version is done by returning a higher number in
-     * {@link com.soomla.store.IStoreAssets#getVersion()}.
+     * IMPORTANT: If you want to override the current <code>StoreInfo</code>, you'll have to bump
+     * the version of your implementation of <code>IStoreAssets</code> in order to remove the
+     * metadata when the application loads. Bumping the version is done by returning a higher number
+     * in {@link com.soomla.store.IStoreAssets#getVersion()}.
      */
     public static void setStoreAssets(IStoreAssets storeAssets){
         if (storeAssets == null){
@@ -61,17 +62,16 @@ public class StoreInfo {
             return;
         }
         // we always initialize from the database, unless this is the first time the game is
-        // loaded - in that case we initialize with setStoreAssets
+        // loaded - in that case we initialize with setStoreAssets.
         if (!initializeFromDB()){
             initializeWithStoreAssets(storeAssets);
         }
     }
 
     /**
-     * Initializes StoreInfo from the database.
-     * This action should be performed only once during the lifetime of a session of the game.
-     * StoreController automatically initializes StoreInfo.
-     * Don't do it if you don't know what you're doing.
+     * Initializes <code>StoreInfo</code> from the database. This action should be performed only
+     * once during the lifetime of a session of the game. <code>StoreController</code> automatically
+     * initializes <code>StoreInfo</code>. Don't do it if you don't know what you're doing.
      *
      * @return success
      */
@@ -103,11 +103,11 @@ public class StoreInfo {
     }
 
     /**
-     * Checks if the VirtualGood with the given goodItemId has upgrades.
+     * Checks if the <code>VirtualGood</code>d with the given <code>goodItemId</code> has upgrades.
      *
-     * @param goodItemId the item id of the VirtualGood that we are checking if has upgrades
-     * @return true if upgrades found for the VirtualGood with the given goodItemId,
-     *     otherwise false
+     * @param goodItemId the item id of the <code>VirtualGood</code> to check if has upgrades.
+     * @return true if upgrades found for the <code>VirtualGood</code> with the given
+     * <code>goodItemId</code>, otherwise false.
      */
     public static boolean hasUpgrades(String goodItemId) {
         return mGoodsUpgrades.containsKey(goodItemId);
@@ -117,11 +117,12 @@ public class StoreInfo {
     /** Setters and Getters */
 
     /**
-     * Retrieves a single VirtualItem that resides in the metadata.
+     * Retrieves a single <code>VirtualItem</code> that resides in the metadata.
      *
-     * @param itemId the itemId of the required VirtualItem
-     * @return VirtualItem for the given itemId
-     * @throws VirtualItemNotFoundException if no VirtualItem with the given itemId was found.
+     * @param itemId the itemId of the required <code>VirtualItem</code>
+     * @return virtual item for the given <code>itemId</code>
+     * @throws VirtualItemNotFoundException if no <code>VirtualItem</code> with the given
+     * <code>itemId</code> was found.
      */
     public static VirtualItem getVirtualItem(String itemId) throws VirtualItemNotFoundException{
         VirtualItem item = mVirtualItems.get(itemId);
@@ -133,12 +134,12 @@ public class StoreInfo {
     }
 
     /**
-     * Retrieves a single PurchasableVirtualItem that resides in the metadata.
-     * IMPORTANT: The retrieved PurchasableVirtualItem has a purchaseType
-     * of PurchaseWithMarket. (This is why we fetch here with productId)
+     * Retrieves a single <code>PurchasableVirtualItem</code> that resides in the metadata.
+     * IMPORTANT: The retrieved <code>PurchasableVirtualItem</code> has a <code>PurchaseType</code>
+     * of <code>PurchaseWithMarket</code> (This is why we fetch here with <code>productId</code>).
      *
-     * @param productId the productId of the required PurchasableVirtualItem
-     * @return PurchasableVirtualItem for the given productId
+     * @param productId the product id of the purchasable item to be fetched
+     * @return <code>PurchasableVirtualItem</code>
      * @throws VirtualItemNotFoundException if no PurchasableVirtualItem with the given
      *         productId was found.
      */
@@ -153,11 +154,12 @@ public class StoreInfo {
     }
 
     /**
-     * Retrieves a single VirtualCategory for a given VirtualGood itemId.
+     * Retrieves the <code>VirtualCategory</code> that the virtual good with the given
+     * <code>goodItemId</code> belongs to.
      *
-     * @param goodItemId the virtualGood in the category
-     * @return a VirtualCategory for the given VirtualGood
-     * @throws VirtualItemNotFoundException when the given goodItemId was not found
+     * @param goodItemId the id of the virtual good whose category is to be fetched
+     * @return the virtual category that the good with the given <code>goodItemId</code> belongs to
+     * @throws VirtualItemNotFoundException if the given <code>goodItemId</code> is not found
      */
     public static VirtualCategory getCategory(String goodItemId)
             throws VirtualItemNotFoundException {
@@ -170,11 +172,12 @@ public class StoreInfo {
     }
 
     /**
-     * Retrieves the first UpgradeVG for a given VirtualGood itemId.
+     * Retrieves the first <code>UpgradeVG</code> for the given <code>goodItemId</code>.
      *
-     * @param goodItemId the item id of the VirtualGood whose upgrade we are looking for
-     * @return the first upgrade for the VirtualGood with the given goodItemId or null if
-     *     there are no upgrades
+     * @param goodItemId The item id of the <code>VirtualGood</code> whose upgrade we are looking
+     *                   for.
+     * @return The first upgrade for the virtual good with the given <code>goodItemId</code>, or
+     * null if it has no upgrades.
      */
     public static UpgradeVG getGoodFirstUpgrade(String goodItemId) {
         List<UpgradeVG> upgrades = mGoodsUpgrades.get(goodItemId);
@@ -189,11 +192,12 @@ public class StoreInfo {
     }
 
     /**
-     * Retrieves the last UpgradeVG for a given VirtualGood itemId.
+     * Retrieves the last <code>UpgradeVG</code> for the given <code>goodItemId</code>.
      *
-     * @param goodItemId the item id of the VirtualGood whose upgrade we are looking for
-     * @return the last upgrade for the VirtualGood with the given goodItemId or null if
-     *     there are no upgrades
+     * @param goodItemId The item id of the <code>VirtualGood</code> whose upgrade we are looking
+     *                   for.
+     * @return The last upgrade for the virtual good with the given <code>goodItemId</code> or null
+     *     if there are no upgrades.
      */
     public static UpgradeVG getGoodLastUpgrade(String goodItemId) {
         List<UpgradeVG> upgrades = mGoodsUpgrades.get(goodItemId);
@@ -208,10 +212,12 @@ public class StoreInfo {
     }
 
     /**
-     * Retrieves all UpgradeVGs for a given VirtualGood itemId.
+     * Retrieves all <code>UpgradeVGs</code> for the virtual good with the given
+     * <code>goodItemId</code>.
      *
-     * @param goodItemId the item id of the VirtualGood whose upgrades we are looking for
-     * @return list of all UpgradeVGs for the VirtualGood with the given goodItemId
+     * @param goodItemId The item id of the <code>VirtualGood</code> whose upgrades we are looking
+     *                   for.
+     * @return list of all UpgradeVGs for the virtual good with the given <code>goodItemId</code>
      */
     public static List<UpgradeVG> getGoodUpgrades(String goodItemId) {
         return mGoodsUpgrades.get(goodItemId);
@@ -383,9 +389,11 @@ public class StoreInfo {
     }
 
     /**
-     * Adds virtual good to StoreInfo
+     * Adds the given virtual good to <code>StoreInfo</code>'s <code>mGoods</code>,
+     * <code>mVirtualItems</code>, and if the good has purchase type <code>PurchaseWithMarket</code>
+     * then it is also added to <code>mPurchasableItems</code>.
      *
-     * @param g VirtualGood to be added
+     * @param g virtual good to be added
      */
     private static void addVG(VirtualGood g) {
         mGoods.add(g);
@@ -400,9 +408,9 @@ public class StoreInfo {
     }
 
     /**
-     * Converts StoreInfo to a JSONObject.
+     * Converts <code>StoreInfo</code> to a <code>JSONObject</code>.
      *
-     * @return a JSONObject representation of the StoreInfo.
+     * @return a <code>JSONObject</code> representation of <code>StoreInfo</code>.
      */
     public static JSONObject toJSONObject(){
 
@@ -468,7 +476,7 @@ public class StoreInfo {
     }
 
     /**
-     * Saves StoreInfo (the store's metadata) in the database as JSON
+     * Saves the store's metadata in the database as JSON.
      */
     public static void save() {
         String store_json = toJSONObject().toString();
@@ -478,9 +486,9 @@ public class StoreInfo {
     }
 
     /**
-     * Replaces the given virtual item, and then saves StoreInfo (the store's metadata)
+     * Replaces the given virtual item, and then saves the store's metadata.
      *
-     * @param virtualItem
+     * @param virtualItem the virtual item to replace
      */
     public static void save(VirtualItem virtualItem) {
         replaceVirtualItem(virtualItem);
@@ -489,13 +497,12 @@ public class StoreInfo {
 
     /**
      * Replaces an old virtual item with a new one by doing the following:
-     *   1. Determines the type of the given virtual item.
-     *   2. Looks for the given virtual item in the relevant list, according to its type.
-     *   3. If found, removes it.
-     *   4. Adds the given virtual item.
+     * 1. Determines the type of the given virtual item.
+     * 2. Looks for the given virtual item in the relevant list, according to its type.
+     * 3. If found, removes it.
+     * 4. Adds the given virtual item.
      *
-     * @param virtualItem if the given virtual item exists in relevant list, replace with the
-     *                    given virtual item, otherwise add the given virtual item.
+     * @param virtualItem the virtual item that replaces the old one if exists.
      */
     public static void replaceVirtualItem(VirtualItem virtualItem) {
         mVirtualItems.put(virtualItem.getItemId(), virtualItem);
@@ -574,10 +581,10 @@ public class StoreInfo {
     }
 
     /**
-     * Initializes from StoreAssets.
+     * Initializes from <code>IStoreAssets</code>.
      * This happens only once - when the game is loaded for the first time.
      *
-     * @param storeAssets
+     * @param storeAssets game economy
      */
     private static void initializeWithStoreAssets(IStoreAssets storeAssets) {
         // fall-back here if the json doesn't exist,

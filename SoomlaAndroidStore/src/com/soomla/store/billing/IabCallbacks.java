@@ -1,5 +1,5 @@
- /*
- * Copyright (C) 2012 Soomla Inc.
+/*
+ * Copyright (C) 2012-2014 Soomla Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.soomla.store.billing;
 
  import java.util.List;
@@ -28,66 +29,92 @@ public class IabCallbacks {
     public interface IabInitListener {
 
          /**
+          * Performs the following function upon success.
           *
-          * @param alreadyInBg
+          * @param alreadyInBg true if the listener has already been initialized and is in
+          *                    background, false otherwise.
           */
         public void success(boolean alreadyInBg);
 
          /**
+          * Performs the following function upon failure and prints the given message.
           *
-          * @param message
+          * @param message reason for failure
           */
         public void fail(String message);
     }
 
      /**
-      * Listens for in-app purchases being made
+      * Listens for in-app purchases being made.
       */
     public interface OnPurchaseListener {
 
          /**
-          * The user has successfully completed a purchase of the desired product Id.
+          * The user has successfully completed a purchase.
           *
-          * @param purchase
+          * @param purchase the successful purchase
           */
         public void success(IabPurchase purchase);
 
          /**
+          * The user has cancelled a purchase.
           *
-          * @param purchase
+          * @param purchase the cancelled purchase
           */
         public void cancelled(IabPurchase purchase);
 
          /**
-          * The user has successfully completed a purchase of an item that he already owns.
+          * The user tries to buy an item he/she already owns.
           *
-          * @param purchase
+          * @param purchase the purchase that is already owned
           */
         public void alreadyOwned(IabPurchase purchase);
 
          /**
+          * The user fails to make the purchase.
           *
-          * @param message
+          * @param message reason for failure
           */
         public void fail(String message);
     }
 
      /**
-      * Listens for inventory queries
+      * Listens for restore purchases queries
       */
-    public interface OnQueryInventoryListener {
-         /**
-          *
-          * @param purchases
-          * @param skuDetails
-          */
-        public void success(List<IabPurchase> purchases, List<IabSkuDetails> skuDetails);
+    public interface OnRestorePurchasesListener {
 
          /**
+          * Restore Purchase is successful.
           *
-          * @param message
+          * @param purchases list of purchases from he/she inventory
+          */
+        public void success(List<IabPurchase> purchases);
+
+         /**
+          * Query inventory fails.
+          *
+          * @param message reason for failure
           */
         public void fail(String message);
+    }
+
+     /**
+      * Listens for fetch skus details queries
+      */
+    public interface OnFetchSkusDetailsListener {
+
+        /**
+         * Fetch skus details is successful.
+         *
+         * @param skuDetails list of skus details
+         */
+        public void success(List<IabSkuDetails> skuDetails);
+        /**
+         * Query inventory fails.
+         *
+         * @param message reason for failure
+         */
+         public void fail(String message);
     }
 
 
@@ -96,14 +123,16 @@ public class IabCallbacks {
       */
     public interface OnConsumeListener {
          /**
+          * Purchase consumption is successful
           *
-          * @param purchase
+          * @param purchase consumed purchase
           */
         public void success(IabPurchase purchase);
 
          /**
+          * Purchase consumption fails
           *
-          * @param message
+          * @param message reason for failure
           */
         public void fail(String message);
     }
