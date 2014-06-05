@@ -37,7 +37,7 @@ public class IabSkuDetails {
                          String description) {
         mItemType = itemType;
         mSku = sku;
-        mPrice = price;
+        mPrice = Double.parseDouble(price);
         mTitle = title;
         mDescription = description;
     }
