@@ -445,6 +445,42 @@ public class StoreController {
 
 
 
+    private ReceiptValidator.OnReceiptValidationListener mReceiptValidationListener = 
+    		new ReceiptValidator.OnReceiptValidationListener() {
+		@Override
+		public void onReceiptValidtionFinished(boolean validationSuccessful, IabPurchase pur) {
+			PurchasableVirtualItem p;
+			
+			try {
+				p = StoreInfo.getPurchasableItem(pur.getSku());
+	        } catch (VirtualItemNotFoundException e) {
+	            StoreUtils.LogError(TAG, "(handleSuccessfulPurchase - purchase or query-inventory) "
+	                    + "ERROR : Couldn't find the " +
+	                    " VirtualCurrencyPack OR MarketItem  with productId: " + pur.getSku() +
+	                    ". It's unexpected so an unexpected error is being emitted.");
+	            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent("Couldn't find the sku "
+	                    + "of a product after purchase or query-inventory."));
+	            return;
+	        }
+					 
+			if (validationSuccessful && p != null) {
+				
+				BusProvider.getInstance().post(new MarketPurchaseVerificationEvent
+                        (p, pur.getOrderId()));
+				
+                p.give(1);
+                BusProvider.getInstance().post(new ItemPurchasedEvent(p));
+
+                consumeIfConsumable(pur);
+                
+			} else {
+				StoreUtils.LogError(TAG, "IabPurchase server verification FAILED for sku " + pur.getSku());
+				BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
+			}
+		}
+	};
+    
+    
     /**
      * Checks the state of the purchase and responds accordingly, giving the user an item,
      * throwing an error, or taking the item away and paying the user back.
@@ -491,39 +527,13 @@ public class StoreController {
             		try {
             			ReceiptValidator g = (ReceiptValidator)Class.forName(StoreConfig.RECEIPT_VALIDATOR).newInstance();
             			
-            			g.validate(purchase, new ReceiptValidator.OnReceiptValidationListener() {
-        					@Override
-        					public void onReceiptValidtionFinished(boolean validationSuccessful, IabPurchase pur) {
-        						PurchasableVirtualItem p;
-        						
-        						try {
-        							p = StoreInfo.getPurchasableItem(pur.getSku());
-        				        } catch (VirtualItemNotFoundException e) {
-        				            StoreUtils.LogError(TAG, "(handleSuccessfulPurchase - purchase or query-inventory) "
-        				                    + "ERROR : Couldn't find the " +
-        				                    " VirtualCurrencyPack OR MarketItem  with productId: " + pur.getSku() +
-        				                    ". It's unexpected so an unexpected error is being emitted.");
-        				            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent("Couldn't find the sku "
-        				                    + "of a product after purchase or query-inventory."));
-        				            return;
-        				        }
-        								 
-        						if (validationSuccessful && p != null) {
-        							
-        							BusProvider.getInstance().post(new MarketPurchaseVerificationEvent
-        			                        (p, pur.getOrderId()));
-        							
-        			                p.give(1);
-        			                BusProvider.getInstance().post(new ItemPurchasedEvent(p));
-        			
-        			                consumeIfConsumable(pur);
-        			                
-        						} else {
-        							StoreUtils.LogError(TAG, "IabPurchase server verification FAILED for sku " + pur.getSku());
-        							BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
-        						}
-        					}
-        				});
+            			if (mInAppBillingService.name().equals(IIabService.IAB_SERVICE_GOOGLE_PLAY)) {
+            				g.validateGooglePlay(purchase, mReceiptValidationListener);
+            			} else if (mInAppBillingService.name().equals(IIabService.IAB_SERVICE_AMAZAON)) {
+            				g.validateAmazon(purchase, mReceiptValidationListener);            				
+            			} else {
+            				StoreUtils.LogError("SOOMLA", "Receipt validator is present but IAB service is unknown!");  
+            			}
             		} catch (Exception e) {
             			StoreUtils.LogDebug("SOOMLA", "Error generating developer payload");            			
             		}

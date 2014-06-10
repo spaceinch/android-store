@@ -42,9 +42,16 @@ public class ReceiptValidator {
         public void onReceiptValidtionFinished(boolean validationSuccessful, IabPurchase purchase);
     }
     
-	public void validate(IabPurchase purchase, OnReceiptValidationListener listener) {
-		StoreUtils.LogWarning(TAG, "WARNING! Receipt validation method is not overridden! Automatically verifying purchase!");
+	public void validateGooglePlay(IabPurchase purchase, OnReceiptValidationListener listener) {
+		StoreUtils.LogWarning(TAG, "WARNING! Google Play receipt validation method is not overridden! Automatically verifying purchase!");
 		
 		listener.onReceiptValidtionFinished(true, purchase);
 	}
+
+	public void validateAmazon(IabPurchase purchase, OnReceiptValidationListener listener) {
+		StoreUtils.LogWarning(TAG, "WARNING! Amazon receipt validation method is not overridden! Automatically verifying purchase!");
+		
+		listener.onReceiptValidtionFinished(true, purchase);
+	}
+
 }

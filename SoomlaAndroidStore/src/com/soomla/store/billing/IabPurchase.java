@@ -33,6 +33,7 @@ public class IabPurchase {
     private String mToken;
     private String mOriginalJson;
     private String mSignature;
+    private String mUserId;
 
     public IabPurchase(String itemType, String sku, String purchaseToken, String orderId, int purchaseState) {
         mItemType = itemType;
@@ -99,6 +100,17 @@ public class IabPurchase {
     public void setDeveloperPayload(String developerPayload) {
         mDeveloperPayload = developerPayload;
     }
+    
+    // Amazon only
+    public String getUserId() {
+        return mUserId;
+    }
+    
+    // Amazon only
+    public void setUserId(String userId) {
+    	mUserId = userId;
+    }
+
 
     @Override
     public String toString() { return "PurchaseInfo(type:" + mItemType + "):" + mOriginalJson; }

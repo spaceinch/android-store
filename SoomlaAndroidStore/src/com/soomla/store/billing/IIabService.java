@@ -24,6 +24,16 @@ import java.util.List;
  */
 public interface IIabService {
 
+	public static final String IAB_SERVICE_GOOGLE_PLAY = 	"Google Play";	
+	public static final String IAB_SERVICE_AMAZAON = 		"Amazon";
+	
+	 /**
+     * Returns service name.
+     *
+     * @return the name of the IAB service, ie, "Google Play"
+     */
+    public String name();
+    
     /**
      * Checks if in-app billing service is initialized.
      *

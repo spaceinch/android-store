@@ -91,6 +91,14 @@ public class IabSkuDetails {
         return mCurrencyCode;
     }
     
+    public void setPriceWithCurrencySymbol(String p) {
+    	mPriceWithCurrencySymbol = p;
+    }
+    
+    public void setCurrencyCode(String c) {
+    	mCurrencyCode = c;
+    }
+    
     @Override
     public String toString() {
         return "IabSkuDetails:" + mJson;
