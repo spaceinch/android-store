@@ -19,6 +19,8 @@ package com.soomla.store.billing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 /**
  * Represents an in-app product's listing details.
  */
@@ -48,11 +50,19 @@ public class IabSkuDetails {
         JSONObject o = new JSONObject(mJson);
         mSku = o.optString("productId");
         mType = o.optString("type");
-        mPrice = o.optDouble("price_amount_micros")/1000000;
         mTitle = o.optString("title");
         mDescription = o.optString("description");
-        mPriceWithCurrencySymbol = o.optString("price");
-        mCurrencyCode = o.optString("price_currency_code");
+    	mPriceWithCurrencySymbol = o.optString("price");
+
+        if (o.has("price_amount_micros")) {
+        	mPrice = o.optDouble("price_amount_micros")/1000000;
+        	mCurrencyCode = o.optString("price_currency_code");
+        } else {
+        	String priceWithoutSymbol = o.optString("price").substring(1);
+        	
+        	mPrice = Double.parseDouble(priceWithoutSymbol);
+        	mCurrencyCode = "USD";
+        }
     }
 
     public String getItemType() {
