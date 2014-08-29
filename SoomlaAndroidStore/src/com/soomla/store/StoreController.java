@@ -475,7 +475,7 @@ public class StoreController {
                 
 			} else {
 				StoreUtils.LogError(TAG, "IabPurchase server verification FAILED for sku " + pur.getSku());
-				BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
+				BusProvider.getInstance().post(new UnexpectedStoreErrorEvent("IabPurchase server verification FAILED for sku " + pur.getSku()));
 			}
 		}
 	};
@@ -574,7 +574,8 @@ public class StoreController {
             StoreUtils.LogError(TAG, "(purchaseActionResultCancelled) ERROR : Couldn't find the "
                     + "VirtualCurrencyPack OR MarketItem  with productId: " + sku
                     + ". It's unexpected so an unexpected error is being emitted.");
-            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
+            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent("Couldn't find the "
+                    + "VirtualCurrencyPack OR MarketItem  with productId: " + sku));
         }
     }
 
@@ -595,7 +596,8 @@ public class StoreController {
             StoreUtils.LogError(TAG, "(purchaseActionResultCancelled) ERROR : Couldn't find the "
                     + "VirtualCurrencyPack OR MarketItem  with productId: " + sku
                     + ". It's unexpected so an unexpected error is being emitted.");
-            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
+            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent("Couldn't find the "
+                    + "VirtualCurrencyPack OR MarketItem  with productId: " + sku));
         } catch (IabException e) {
             StoreUtils.LogDebug(TAG, "Error while consuming: " + sku);
             BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(e.getMessage()));
