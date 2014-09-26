@@ -19,6 +19,11 @@ package com.soomla.store.billing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+import java.text.NumberFormat;
+import java.text.ParseException;
+
+
 import android.util.Log;
 
 /**
@@ -56,13 +61,24 @@ public class IabSkuDetails {
 
         if (o.has("price_amount_micros")) {
         	mPrice = o.optDouble("price_amount_micros")/1000000;
+        } else {
+        	// try to parse the amount
+        	try {
+        	    Number number = NumberFormat.getCurrencyInstance(Locale.getDefault())
+        	                                            .parse(mPriceWithCurrencySymbol);
+        	    mPrice = number.doubleValue();
+        	} catch (ParseException e) {
+        		// could not parse price in user's locale
+        		mPrice = 0;
+        	}
+        }
+
+        if (o.has("price_currency_code")) {
         	mCurrencyCode = o.optString("price_currency_code");
         } else {
-        	String priceWithoutSymbol = o.optString("price").substring(1);
-        	
-        	mPrice = Double.parseDouble(priceWithoutSymbol);
-        	mCurrencyCode = "USD";
+        	mCurrencyCode = "???";
         }
+
     }
 
     public String getItemType() {
