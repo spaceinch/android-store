@@ -40,6 +40,7 @@ import com.soomla.store.events.MarketItemsRefreshStartedEvent;
 import com.soomla.store.events.MarketPurchaseCancelledEvent;
 import com.soomla.store.events.MarketPurchaseEvent;
 import com.soomla.store.events.MarketPurchaseStartedEvent;
+import com.soomla.store.events.MarketPurchaseVerificationEvent;
 import com.soomla.store.events.MarketRefundEvent;
 import com.soomla.store.events.RestoreTransactionsFinishedEvent;
 import com.soomla.store.events.RestoreTransactionsStartedEvent;
@@ -193,7 +194,7 @@ public class SoomlaStore {
                                     for (IabPurchase iabPurchase : purchases) {
                                         SoomlaUtils.LogDebug(TAG, "Got owned item: " + iabPurchase.getSku());
 
-                                        handleSuccessfulPurchase(iabPurchase);
+                                        verifyOrHandleSuccessfulPurchase(iabPurchase);
                                     }
                                 }
 
@@ -345,7 +346,7 @@ public class SoomlaStore {
 
                                     @Override
                                     public void success(IabPurchase purchase) {
-                                        handleSuccessfulPurchase(purchase);
+                                    	verifyOrHandleSuccessfulPurchase(purchase);
                                     }
 
                                     @Override
@@ -362,15 +363,16 @@ public class SoomlaStore {
 
                                         try {
                                             PurchasableVirtualItem pvi = StoreInfo.getPurchasableItem(sku);
-                                            consumeIfConsumable(purchase, pvi);
 
-                                            if (StoreInfo.isItemNonConsumable(pvi)) {
+                                            if (StoreInfo.isItemNonConsumable(pvi)) {                                            	
                                                 String message = "(alreadyOwned) the user tried to " +
                                                         "buy a non-consumable that was already " +
                                                         "owned. itemId: " + pvi.getItemId() +
                                                         "    productId: " + sku;
                                                 SoomlaUtils.LogDebug(TAG, message);
                                                 BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(message));
+                                            } else {
+                                            	verifyOrHandleSuccessfulPurchase(purchase);
                                             }
                                         } catch (VirtualItemNotFoundException e) {
                                             String message = "(alreadyOwned) ERROR : Couldn't find the "
@@ -440,15 +442,53 @@ public class SoomlaStore {
         //BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(msg));
     }
 
-
+    /**
+     * Checks whether the purchase needs verification, and verifies if it does,
+     * otherwise it calls handleSuccessfulPurchase.
+     *
+     * @param purchase purchase whose state is to be checked.
+     */
+    private void verifyOrHandleSuccessfulPurchase(IabPurchase purchase) {
+    	if (mVerification == null) {
+    		handleSuccessfulPurchase(purchase, false);
+    	} else {
+    		// create a verification object to verify the purchase
+    		SoomlaVerification v = null;
+    		try {
+    			v = (SoomlaVerification)mVerification.clone();
+    		} catch (CloneNotSupportedException e) {
+    			String message = "(verification) ERROR : Could not create verification instance!";
+                SoomlaUtils.LogError(TAG, message);
+                BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(message));
+                return;
+    		}
+    		
+    		if (v != null) {
+	    		v.verify(purchase, new SoomlaVerification.OnReceiptValidationListener() {
+	    			public void onReceiptValidtionFinished(boolean validationSuccessful, IabPurchase pur) {
+	    				if (validationSuccessful) {
+	    					handleSuccessfulPurchase(pur, true);
+	    				} else {
+	    					String message = "(verification) ERROR : Verification failed "
+	                                + "for productId: " + pur.getSku()
+	                                + ". It's unexpected so an unexpected error is being emitted.";
+	                        SoomlaUtils.LogError(TAG, message);
+	                        BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(message));
+	    				}
+	    			}
+	    		});
+    		}
+    	}
+    }
 
     /**
      * Checks the state of the purchase and responds accordingly, giving the user an item,
      * throwing an error, or taking the item away and paying the user back.
      *
      * @param purchase purchase whose state is to be checked.
+     * @param verified if the purchase was verified (ie, though SSV).
      */
-    private void handleSuccessfulPurchase(IabPurchase purchase) {
+    private void handleSuccessfulPurchase(IabPurchase purchase, boolean verified) {
         String sku = purchase.getSku();
         String developerPayload = purchase.getDeveloperPayload();
         String token = purchase.getToken();
@@ -483,9 +523,15 @@ public class SoomlaStore {
 
                 BusProvider.getInstance().post(new MarketPurchaseEvent
                         (pvi, developerPayload, token, orderId));
+ 
                 pvi.give(1);
+                
                 BusProvider.getInstance().post(new ItemPurchasedEvent(pvi, developerPayload));
-
+                if (verified) {
+                	BusProvider.getInstance().post(new MarketPurchaseVerificationEvent
+                			(pvi, developerPayload, token, orderId));
+                }
+                
                 consumeIfConsumable(purchase, pvi);
 
                 break;
@@ -598,10 +644,19 @@ public class SoomlaStore {
     }
 
 
+    /**
+     * Setter for custom verification or purchases
+     *
+     * @param verification Subclass of SoomlaVerification
+     */
+    public void setVerification(SoomlaVerification verification) {
+    	mVerification = verification;
+    }
+    
     /* Private Members */
 
     private static final String TAG = "SOOMLA SoomlaStore"; //used for Log messages
     private boolean mInitialized = false;
     private IIabService mInAppBillingService;
-
+    private SoomlaVerification mVerification = null;
 }
