@@ -256,9 +256,11 @@ public abstract class IabHelper {
             handler.post(new Runnable() {
                 public void run() {
                     IabResult result = new IabResult(IabResult.BILLING_RESPONSE_RESULT_OK, "IabInventory restore successful.");
-                    mRestorePurchasessFinishedListener.onRestorePurchasessFinished(
-                            result, inventory);
-                    mRestorePurchasessFinishedListener = null;
+                    if (mRestorePurchasessFinishedListener != null) {
+                        mRestorePurchasessFinishedListener.onRestorePurchasessFinished(
+                                result, inventory);
+                        mRestorePurchasessFinishedListener = null;
+                    }
                 }
             });
         }
@@ -279,8 +281,10 @@ public abstract class IabHelper {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mRestorePurchasessFinishedListener.onRestorePurchasessFinished(result, null);
-                    mRestorePurchasessFinishedListener = null;
+                    if (mRestorePurchasessFinishedListener != null) {
+                        mRestorePurchasessFinishedListener.onRestorePurchasessFinished(result, null);
+                        mRestorePurchasessFinishedListener = null;
+                    }
                 }
             });
         }
@@ -302,9 +306,11 @@ public abstract class IabHelper {
             handler.post(new Runnable() {
                 public void run() {
                     IabResult result = new IabResult(IabResult.BILLING_RESPONSE_RESULT_OK, "IabInventory fetch details successful.");
-                    mFetchSkusDetailsFinishedListener.onFetchSkusDetailsFinished(
-                            result, inventory);
-                    mFetchSkusDetailsFinishedListener = null;
+                    if (mFetchSkusDetailsFinishedListener != null) {
+                        mFetchSkusDetailsFinishedListener.onFetchSkusDetailsFinished(
+                                result, inventory);
+                        mFetchSkusDetailsFinishedListener = null;
+                    }
                 }
             });
         }
@@ -326,8 +332,10 @@ public abstract class IabHelper {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mFetchSkusDetailsFinishedListener.onFetchSkusDetailsFinished(result, null);
-                    mFetchSkusDetailsFinishedListener = null;
+                    if (mFetchSkusDetailsFinishedListener != null) {
+                        mFetchSkusDetailsFinishedListener.onFetchSkusDetailsFinished(result, null);
+                        mFetchSkusDetailsFinishedListener = null;
+                    }
                 }
             });
         }

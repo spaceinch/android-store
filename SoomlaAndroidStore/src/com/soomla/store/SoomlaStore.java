@@ -213,9 +213,14 @@ public class SoomlaStore {
                             }
                         };
 
-                        mInAppBillingService.restorePurchasesAsync(restorePurchasesListener);
+                        try {
+                            mInAppBillingService.restorePurchasesAsync(restorePurchasesListener);
 
-                        BusProvider.getInstance().post(new RestoreTransactionsStartedEvent());
+                            BusProvider.getInstance().post(new RestoreTransactionsStartedEvent());
+                        } catch (IllegalStateException ise) {
+                            String message = "Illegal state restoring purchases! " + ise;
+                            SoomlaUtils.LogError(TAG, message);
+                        }
                     }
 
                     @Override
@@ -291,9 +296,15 @@ public class SoomlaStore {
                                 };
 
                         final List<String> purchasableProductIds = StoreInfo.getAllProductIds();
-                        mInAppBillingService.fetchSkusDetailsAsync(purchasableProductIds, fetchSkusDetailsListener);
 
-                        BusProvider.getInstance().post(new MarketItemsRefreshStartedEvent());
+                        try {
+                            mInAppBillingService.fetchSkusDetailsAsync(purchasableProductIds, fetchSkusDetailsListener);
+
+                            BusProvider.getInstance().post(new MarketItemsRefreshStartedEvent());
+                        } catch (IllegalStateException ise) {
+                            String message = "Illegal state fetching SKU details! " + ise;
+                            SoomlaUtils.LogError(TAG, message);
+                        }
                     }
 
                     @Override
@@ -388,9 +399,15 @@ public class SoomlaStore {
                                         handleErrorResult(message);
                                     }
                                 };
-                        mInAppBillingService.launchPurchaseFlow(marketItem.getProductId(),
-                                purchaseListener, payload);
-                        BusProvider.getInstance().post(new MarketPurchaseStartedEvent(pvi));
+                        try {
+                            mInAppBillingService.launchPurchaseFlow(marketItem.getProductId(),
+                                    purchaseListener, payload);
+                            BusProvider.getInstance().post(new MarketPurchaseStartedEvent(pvi));
+                        } catch (IllegalStateException ise) {
+                            String message = "Illegal state launching purchase flow! " + ise;
+                            SoomlaUtils.LogError(TAG, message);
+                            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(message));
+                        }
                     }
 
                     @Override
