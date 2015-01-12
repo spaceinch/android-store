@@ -498,7 +498,6 @@ public class StoreInfo {
      */
     public static void save(VirtualItem virtualItem) {
         replaceVirtualItem(virtualItem);
-        save();
     }
 
     /**
