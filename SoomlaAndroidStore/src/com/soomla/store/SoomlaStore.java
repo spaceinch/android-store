@@ -51,7 +51,7 @@ import com.soomla.store.purchaseTypes.PurchaseWithMarket;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.util.Log;
 /**
  * This class holds the basic assets needed to operate the Store.
  * You can use it to perform any operation related to the mobile store.
@@ -521,16 +521,18 @@ public class SoomlaStore {
                     }
                 }
 
+                if (verified) {
+                    BusProvider.getInstance().post(new MarketPurchaseVerificationEvent
+                            (pvi, developerPayload, token, orderId));
+                }
+
                 BusProvider.getInstance().post(new MarketPurchaseEvent
                         (pvi, developerPayload, token, orderId));
  
                 pvi.give(1);
                 
                 BusProvider.getInstance().post(new ItemPurchasedEvent(pvi, developerPayload));
-                if (verified) {
-                	BusProvider.getInstance().post(new MarketPurchaseVerificationEvent
-                			(pvi, developerPayload, token, orderId));
-                }
+
                 
                 consumeIfConsumable(purchase, pvi);
 
